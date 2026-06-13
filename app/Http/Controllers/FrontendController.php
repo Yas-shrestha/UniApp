@@ -62,20 +62,18 @@ class FrontendController extends Controller
     {
         return view('frontend.courses');
     }
-    public function eventDetail(Event $event)
+    public function eventDetail(string $slug)
     {
-        $event->load('category');
+        $event = Event::with('category')->where('slug', $slug)->firstOrFail();
 
         $upcoming = Event::upcoming()
             ->where('category_id', $event->category_id)
             ->where('id', '!=', $event->id)
-            ->latest('date')
             ->take(3)
             ->get();
 
         $past = Event::past()
             ->where('category_id', $event->category_id)
-            ->latest('date')
             ->take(3)
             ->get();
 

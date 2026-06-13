@@ -66,4 +66,8 @@ class Event extends Model
             ->limit($limit)
             ->get();
     }
+    public function scopePast($query)
+    {
+        return $query->where('date', '<', now())->orderByDesc('date');
+    }
 }
