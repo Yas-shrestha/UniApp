@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         $categories = Category::withCount('events')->paginate(10);
 
-        return view('frontend.categories.index', compact('categories'));
+        return view('backend.categories.index', compact('categories'));
     }
 
     /**
@@ -24,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('frontend.categories.create');
+        return view('backend.categories.create');
     }
 
     /**
@@ -50,7 +50,7 @@ class CategoryController extends Controller
     {
         $events = $category->events()->upcoming()->paginate(5);
 
-        return view('frontend.categories.show', compact('category', 'events'));
+        return view('backend.categories.show', compact('category', 'events'));
     }
 
     /**
@@ -58,7 +58,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('frontend.categories.edit', compact('category'));
+        return view('backend.categories.edit', compact('category'));
     }
 
     /**

@@ -8,7 +8,7 @@
                     <div class="pagetitle">
                         <div class="d-flex justify-content-between">
                             <h1>Show</h1>
-                            <a href="{{ route('file.index') }}" class="btn btn-primary btn-md p-3">Back</a>
+                            <a href="{{ route('files.index') }}" class="btn btn-primary btn-md p-3">Back</a>
                         </div>
                         <nav>
                             <ol class="breadcrumb">
@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="{{ route('file.store', $file->id) }}" method="POST"
+                                    <form action="{{ route('files.store', $file->id) }}" method="POST"
                                         enctype="multipart/form-data">
                                         @method('PUT')
                                         @csrf

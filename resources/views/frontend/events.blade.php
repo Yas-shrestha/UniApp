@@ -26,16 +26,12 @@
                 <div class="events-filters">
                     <a href="{{ route('events.index') }}"
                         class="ev-filter-btn {{ !request('category') ? 'active' : '' }}">All</a>
-                    <a href="{{ route('events.index', ['category' => 'ai']) }}"
-                        class="ev-filter-btn {{ request('category') === 'ai' ? 'active' : '' }}">AI &amp; Tech</a>
-                    <a href="{{ route('events.index', ['category' => 'academic']) }}"
-                        class="ev-filter-btn {{ request('category') === 'academic' ? 'active' : '' }}">Academic</a>
-                    <a href="{{ route('events.index', ['category' => 'career']) }}"
-                        class="ev-filter-btn {{ request('category') === 'career' ? 'active' : '' }}">Career</a>
-                    <a href="{{ route('events.index', ['category' => 'arts']) }}"
-                        class="ev-filter-btn {{ request('category') === 'arts' ? 'active' : '' }}">Arts &amp; Culture</a>
-                    <a href="{{ route('events.index', ['category' => 'athletics']) }}"
-                        class="ev-filter-btn {{ request('category') === 'athletics' ? 'active' : '' }}">Athletics</a>
+                    @foreach ($categories as $cat)
+                        <a href="{{ route('events.index', ['category' => $cat->slug]) }}"
+                            class="ev-filter-btn {{ request('category') === $cat->slug ? 'active' : '' }}">
+                            {{ $cat->name }}
+                        </a>
+                    @endforeach
                 </div>
 
                 <!-- Events List -->
@@ -68,7 +64,7 @@
 
                 <!-- Pagination -->
                 <div class="ev-pagination">
-                    {{ $events->links('vendor.pagination.events') }}
+                    {{ $events->links() }}
                 </div>
             </div>
         </section>

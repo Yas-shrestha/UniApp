@@ -28,7 +28,7 @@ class BlogController extends Controller
 
         $featured = Blog::with('category')->published()->featured()->first();
 
-        return view('frontend.blogs.index', compact('blogs', 'categories', 'category', 'search', 'featured'));
+        return view('backend.blogs.index', compact('blogs', 'categories', 'category', 'search', 'featured'));
     }
 
     /**
@@ -38,7 +38,7 @@ class BlogController extends Controller
     {
         $categories = Category::all();
 
-        return view('frontend.blogs.create', compact('categories'));
+        return view('backend.blogs.create', compact('categories'));
     }
 
     /**
@@ -82,7 +82,7 @@ class BlogController extends Controller
 
         $relatedBlogs = $blog->getRelatedBlogs();
 
-        return view('frontend.blogs.show', compact('blog', 'relatedBlogs'));
+        return view('backend.blogs.show', compact('blog', 'relatedBlogs'));
     }
 
     /**
@@ -92,7 +92,7 @@ class BlogController extends Controller
     {
         $categories = Category::all();
 
-        return view('frontend.blogs.edit', compact('blog', 'categories'));
+        return view('backend.blogs.edit', compact('blog', 'categories'));
     }
 
     /**

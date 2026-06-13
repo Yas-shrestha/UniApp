@@ -20,14 +20,14 @@
         <section id="services-list" class="section" style="background: #f8f9fa; padding: 80px 0">
             <div class="container" data-aos="fade-up">
                 <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
-                    <a href="{{ route('services.index') }}" class="btn btn-filter {{ !$type ? 'active' : '' }}">
+                    <a href="{{ route('services') }}" class="btn btn-filter {{ !$type ? 'active' : '' }}">
                         <i class="bi bi-grid-fill me-1"></i> All Services
                     </a>
-                    <a href="{{ route('services.index', ['type' => 'traditional']) }}"
+                    <a href="{{ route('services', ['type' => 'traditional']) }}"
                         class="btn btn-filter {{ $type == 'traditional' ? 'active' : '' }}">
                         <i class="bi bi-mortarboard-fill me-1"></i> Traditional Support
                     </a>
-                    <a href="{{ route('services.index', ['type' => 'future']) }}"
+                    <a href="{{ route('services', ['type' => 'future']) }}"
                         class="btn btn-filter {{ $type == 'future' ? 'active' : '' }}">
                         <i class="bi bi-lightning-charge-fill me-1"></i> AI &amp; Future Solutions
                     </a>
@@ -46,8 +46,9 @@
                                 @endif
                                 <h4 class="mt-3">{{ $service->title }}</h4>
                                 <p class="text-muted">{{ Str::limit($service->short_description, 100) }}</p>
-                                <a href="{{ route('services.show', $service->slug) }}" class="btn btn-link p-0">Learn More
-                                    →</a>
+                                <a href="{{ route('services.detail', $service->slug) }}" class="btn btn-link p-0">Learn
+                                    More →</a>
+
                             </div>
                         </div>
                     @empty

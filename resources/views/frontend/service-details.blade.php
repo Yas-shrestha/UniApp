@@ -9,7 +9,7 @@
                 <div class="banner-breadcrumb">
                     <a href="{{ route('home') }}">Home</a>
                     <span class="sep">/</span>
-                    <a href="{{ route('services.index') }}">Services</a>
+                    <a href="{{ route('services') }}">Services</a>
                     <span class="sep">/</span>
                     <span>{{ $service->title }}</span>
                 </div>
@@ -24,7 +24,7 @@
                             <h4>Services List</h4>
                             <div class="services-list">
                                 @foreach ($allServices as $item)
-                                    <a href="{{ route('services.show', $item->slug) }}"
+                                    <a href="{{ route('services.detail', $item->slug) }}"
                                         class="{{ $item->id == $service->id ? 'active' : '' }}">
                                         <i class="bi bi-arrow-right-circle"></i>
                                         <span>{{ $item->title }}</span>
@@ -87,21 +87,31 @@
                         @endif
 
                         @if ($relatedServices->count())
-                            <div class="related-blogs mt-5">
+                            <div class="related-services mt-5">
                                 <h3>Related Services</h3>
                                 <div class="row gy-4">
                                     @foreach ($relatedServices as $related)
                                         <div class="col-md-6">
-                                            <div class="blog-card">
-                                                @if ($related->image)
+                                            <div class="service-card-item">
+                                                @if ($related->icon)
+                                                    <div class="service-card-icon-wrapper">
+                                                        <i class="{{ $related->icon }}"></i>
+                                                    </div>
+                                                @elseif ($related->image)
                                                     <img src="{{ asset('storage/' . $related->image) }}"
-                                                        alt="{{ $related->title }}" />
+                                                        alt="{{ $related->title }}" class="img-fluid rounded mb-3" />
                                                 @endif
-                                                <div class="blog-card-body">
-                                                    <h5>{{ $related->title }}</h5>
-                                                    <a href="{{ route('services.show', $related->slug) }}"
-                                                        class="btn btn-link p-0">Learn More →</a>
-                                                </div>
+                                                <span class="service-badge {{ $related->type }}">
+                                                    {{ $related->type === 'future' ? 'AI & Future' : 'Traditional' }}
+                                                </span>
+                                                <h5 class="service-card-title">{{ $related->title }}</h5>
+                                                @if ($related->short_description)
+                                                    <p class="service-card-desc">
+                                                        {{ Str::limit($related->short_description, 80) }}
+                                                    </p>
+                                                @endif
+                                                <a href="{{ route('services.detail', $related->slug) }}"
+                                                    class="btn btn-link p-0 mt-2">Learn More →</a>
                                             </div>
                                         </div>
                                     @endforeach

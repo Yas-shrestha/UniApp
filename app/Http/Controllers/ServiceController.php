@@ -20,7 +20,7 @@ class ServiceController extends Controller
             ->latest()
             ->get();
 
-        return view('frontend.services.index', compact('services', 'type'));
+        return view('backend.services.index', compact('services', 'type'));
     }
 
     /**
@@ -28,7 +28,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('frontend.services.create');
+        return view('backend.services.create');
     }
 
     /**
@@ -81,7 +81,7 @@ class ServiceController extends Controller
         $allServices   = Service::orderBy('title')->get();
         $relatedServices = $service->getRelatedServices();
 
-        return view('frontend.services.show', compact('service', 'allServices', 'relatedServices'));
+        return view('backend.services.view', compact('service', 'allServices', 'relatedServices'));
     }
 
     /**
@@ -89,7 +89,7 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        return view('frontend.services.edit', compact('service'));
+        return view('backend.services.edit', compact('service'));
     }
 
     /**

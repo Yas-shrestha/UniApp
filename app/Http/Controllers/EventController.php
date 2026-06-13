@@ -24,7 +24,7 @@ class EventController extends Controller
             ->paginate(5)
             ->withQueryString();
 
-        return view('frontend.events.index', compact('events', 'categories', 'category'));
+        return view('backend.events.index', compact('events', 'categories', 'category'));
     }
 
     /**
@@ -34,7 +34,7 @@ class EventController extends Controller
     {
         $categories = Category::all();
 
-        return view('frontend.events.create', compact('categories'));
+        return view('backend.events.create', compact('categories'));
     }
 
     /**
@@ -72,7 +72,7 @@ class EventController extends Controller
 
         Event::create($validated);
 
-        return redirect()->route('events.index')->with('success', 'Event created successfully.');
+        return redirect('/admin/events')->with('success', 'Event created successfully.');
     }
 
     /**
@@ -84,7 +84,7 @@ class EventController extends Controller
 
         $relatedEvents = $event->getRelatedEvents();
 
-        return view('frontend.events.show', compact('event', 'relatedEvents'));
+        return view('backend.events.view', compact('event', 'relatedEvents'));
     }
 
     /**
@@ -94,7 +94,7 @@ class EventController extends Controller
     {
         $categories = Category::all();
 
-        return view('frontend.events.edit', compact('event', 'categories'));
+        return view('backend.events.edit', compact('event', 'categories'));
     }
 
     /**
@@ -132,7 +132,7 @@ class EventController extends Controller
 
         $event->update($validated);
 
-        return redirect()->route('events.index')->with('success', 'Event updated successfully.');
+        return redirect('/admin/events')->with('success', 'Event updated successfully.');
     }
 
     /**
@@ -142,6 +142,6 @@ class EventController extends Controller
     {
         $event->delete();
 
-        return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
+        return redirect('/admin/events')->with('success', 'Event deleted successfully.');
     }
 }

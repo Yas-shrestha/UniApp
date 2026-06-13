@@ -20,7 +20,7 @@
                         @endif
                         <div class="d-flex justify-content-between">
                             <h1>Manage file</h1>
-                            <a href="{{ route('file.create') }}" class="btn btn-primary btn-md p-3"><i class="fa fa-plus"
+                            <a href="{{ route('files.create') }}" class="btn btn-primary btn-md p-3"><i class="fa fa-plus"
                                     aria-hidden="true"></i></a>
                         </div>
                         <nav>
@@ -57,10 +57,10 @@
                                                     </td>
                                                     <td>{{ $file->img }}</td>
                                                     <td>
-                                                        <a href="{{ route('file.edit', $file->id) }}"
+                                                        <a href="{{ route('files.edit', $file->id) }}"
                                                             class="btn btn-md btn-primary"><i class="fa fa-pencil"
                                                                 aria-hidden="true"></i></a>
-                                                        <a href="{{ route('file.show', $file->id) }}"
+                                                        <a href="{{ route('files.show', $file->id) }}"
                                                             class="btn btn-md btn-secondary"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                         <!-- Modal trigger button -->
@@ -91,7 +91,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <form
-                                                                            action="{{ route('file.destroy', $file->id) }}"
+                                                                            action="{{ route('files.destroy', $file->id) }}"
                                                                             method="POST" enctype="multipart/form-data">
                                                                             @method('delete')
                                                                             @csrf
