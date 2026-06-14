@@ -6,18 +6,20 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ChatbotController;
 
+Route::get('/chatbot', [ChatbotController::class, 'index']);
+Route::post('/chatbot/chat', [ChatbotController::class, 'chat']);
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/blog', [FrontendController::class, 'blog'])->name('blogs');
 Route::get('/blog/{slug}', [FrontendController::class, 'blogDetail'])->name('blogs.show');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::get('/courses', [FrontendController::class, 'courses'])->name('courses');
-Route::get('/event-detail', [FrontendController::class, 'eventDetail'])->name('event-detail');
 Route::get('/events', [FrontendController::class, 'events'])->name('events.index');
+Route::get('/event-detail', [FrontendController::class, 'eventDetail'])->name('event-detail');
 Route::get('/events/{event:slug}', [FrontendController::class, 'eventDetail'])->name('events.show');
 Route::get('/service-details', [FrontendController::class, 'serviceDetails'])->name('service-details');
 Route::get('/starter-page', [FrontendController::class, 'starterPage'])->name('starter-page');

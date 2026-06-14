@@ -352,6 +352,408 @@
 
  <!-- Main JS File -->
  <script src="{{ asset('assets/js/main.js') }}"></script>
+
+ <!-- Chatbot Bubble -->
+ <div id="chat-bubble" onclick="toggleChat()" title="Ask us anything">
+     <i class="bi bi-chat-dots-fill"></i>
+ </div>
+
+ <div id="chat-popup">
+     <div id="chat-popup-header">
+         <span>College Assistant</span>
+         <button onclick="toggleChat()" aria-label="Close chat"><i class="bi bi-x-lg"></i></button>
+     </div>
+     <div id="chat-messages">
+         <div class="chat-msg bot">Hi! Ask me about our events, services, blogs, or anything else.</div>
+     </div>
+     <div id="chat-input-row">
+         <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
+         <button id="chat-send" onclick="chatSend()"><i class="bi bi-send-fill"></i></button>
+     </div>
+ </div>
+
+ <style>
+     #chat-bubble {
+         position: fixed;
+         bottom: 60px;
+         right: 28px;
+         width: 56px;
+         height: 56px;
+         background: #bfae8f;
+         color: #fff;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 24px;
+         cursor: pointer;
+         z-index: 9999;
+         transition: background 0.2s;
+     }
+
+     #chat-bubble:hover {
+         background: #a89470;
+     }
+
+     #chat-popup {
+         display: none;
+         flex-direction: column;
+         position: fixed;
+         bottom: 96px;
+         right: 28px;
+         width: 340px;
+         height: 480px;
+         background: #1a1a2e;
+         border: 1px solid #2e2e4e;
+         border-radius: 14px;
+         overflow: hidden;
+         z-index: 9999;
+     }
+
+     #chat-popup.open {
+         display: flex;
+     }
+
+     #chat-popup-header {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         padding: 14px 16px;
+         background: #bfae8f;
+         color: #fff;
+         font-weight: 600;
+         font-size: 15px;
+     }
+
+     #chat-popup-header button {
+         background: none;
+         border: none;
+         color: #fff;
+         font-size: 16px;
+         cursor: pointer;
+     }
+
+     #chat-messages {
+         flex: 1;
+         overflow-y: auto;
+         padding: 14px;
+         display: flex;
+         flex-direction: column;
+         gap: 10px;
+     }
+
+     .chat-msg {
+         max-width: 82%;
+         padding: 9px 13px;
+         border-radius: 12px;
+         font-size: 13.5px;
+         line-height: 1.55;
+         word-break: break-word;
+     }
+
+     .chat-msg.user {
+         align-self: flex-end;
+         background: #bfae8f;
+         color: #fff;
+         border-bottom-right-radius: 3px;
+     }
+
+     .chat-msg.bot {
+         align-self: flex-start;
+         background: #2a2a3e;
+         color: #e0ddd5;
+         border-bottom-left-radius: 3px;
+     }
+
+     .chat-msg.typing {
+         color: #888;
+         font-style: italic;
+     }
+
+     .chat-msg.bot-html {
+         align-self: flex-start;
+         background: transparent;
+         padding: 0;
+         max-width: 100%;
+     }
+
+     /* Event card */
+     .chat-card {
+         display: block;
+         border-radius: 10px;
+         padding: 10px 13px;
+         margin-bottom: 8px;
+         cursor: pointer;
+         text-decoration: none;
+         transition: border-color 0.2s, background 0.2s;
+         border: 1px solid #3a3a5e;
+         background: #2a2a3e;
+     }
+
+     .chat-card:hover {
+         border-color: #bfae8f;
+         background: #32324a;
+     }
+
+     .chat-card-type {
+         font-size: 10px;
+         font-weight: 700;
+         letter-spacing: 1px;
+         text-transform: uppercase;
+         margin-bottom: 4px;
+     }
+
+     .type-event {
+         color: #bfae8f;
+     }
+
+     .type-service {
+         color: #7ec8a4;
+     }
+
+     .type-blog {
+         color: #7ab8f5;
+     }
+
+     .chat-card-title {
+         color: #e0ddd5;
+         font-weight: 600;
+         font-size: 13.5px;
+         margin-bottom: 4px;
+     }
+
+     .chat-card-meta {
+         color: #a0a0b0;
+         font-size: 11.5px;
+         display: flex;
+         gap: 10px;
+         flex-wrap: wrap;
+     }
+
+     .chat-card-meta span {
+         display: flex;
+         align-items: center;
+         gap: 4px;
+     }
+
+     #chat-input-row {
+         display: flex;
+         gap: 8px;
+         padding: 10px 12px;
+         border-top: 1px solid #2e2e4e;
+         background: #1a1a2e;
+     }
+
+     #chat-input {
+         flex: 1;
+         padding: 9px 12px;
+         border-radius: 8px;
+         border: 1px solid #2e2e4e;
+         background: #2a2a3e;
+         color: #e0ddd5;
+         font-size: 13.5px;
+         outline: none;
+     }
+
+     #chat-input::placeholder {
+         color: #666;
+     }
+
+     #chat-input:focus {
+         border-color: #bfae8f;
+     }
+
+     #chat-send {
+         padding: 9px 13px;
+         background: #bfae8f;
+         color: #fff;
+         border: none;
+         border-radius: 8px;
+         cursor: pointer;
+         font-size: 15px;
+     }
+
+     #chat-send:hover {
+         background: #a89470;
+     }
+
+     #chat-send:disabled {
+         background: #555;
+         cursor: not-allowed;
+     }
+ </style>
+
+ <script>
+     const chatHistory = [];
+
+     function toggleChat() {
+         document.getElementById('chat-popup').classList.toggle('open');
+         if (document.getElementById('chat-popup').classList.contains('open'))
+             document.getElementById('chat-input').focus();
+     }
+
+     async function chatSend() {
+         const input = document.getElementById('chat-input');
+         const sendBtn = document.getElementById('chat-send');
+         const text = input.value.trim();
+         if (!text) return;
+
+         addChatMsg('user', text);
+         chatHistory.push({
+             role: 'user',
+             content: text
+         });
+         input.value = '';
+         sendBtn.disabled = true;
+
+         const typing = addChatMsg('bot', 'Typing...', true);
+
+         try {
+             const res = await fetch('/chatbot/chat', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                 },
+                 body: JSON.stringify({
+                     messages: chatHistory
+                 }),
+             });
+             const data = await res.json();
+             const reply = data.reply || data.error || 'Something went wrong.';
+             typing.remove();
+             renderBotReply(reply);
+             chatHistory.push({
+                 role: 'assistant',
+                 content: reply
+             });
+         } catch (e) {
+             typing.remove();
+             addChatMsg('bot', 'Connection error. Please try again.');
+         }
+
+         sendBtn.disabled = false;
+         input.focus();
+     }
+
+     function parseStructured(text) {
+         const items = [];
+         const patterns = [{
+                 type: 'event',
+                 rx: /\[EVENT\]([\s\S]*?)\[\/EVENT\]/g
+             },
+             {
+                 type: 'service',
+                 rx: /\[SERVICE\]([\s\S]*?)\[\/SERVICE\]/g
+             },
+             {
+                 type: 'blog',
+                 rx: /\[BLOG\]([\s\S]*?)\[\/BLOG\]/g
+             },
+         ];
+
+         let parsed = text;
+         patterns.forEach(({
+             type,
+             rx
+         }) => {
+             parsed = parsed.replace(rx, (_, inner) => {
+                 const get = (key) => {
+                     const m = inner.match(new RegExp(key + '=([^|\\]]+)'));
+                     return m ? m[1].trim() : '';
+                 };
+                 items.push({
+                     type,
+                     title: get('title'),
+                     slug: get('slug'),
+                     date: get('date'),
+                     location: get('location'),
+                     description: get('description')
+                 });
+                 return ''; // remove from plain text
+             });
+         });
+
+         return {
+             plainText: parsed.trim(),
+             items
+         };
+     }
+
+     function makeCard(item) {
+         const urls = {
+             event: `/events/${item.slug}`,
+             service: `/services/${item.slug}`,
+             blog: `/blog/${item.slug}`,
+         };
+         const labels = {
+             event: 'Event',
+             service: 'Service',
+             blog: 'Blog'
+         };
+         const icons = {
+             event: 'bi-calendar3',
+             service: 'bi-gear',
+             blog: 'bi-file-text'
+         };
+
+         const a = document.createElement('a');
+         a.className = 'chat-card';
+         a.href = urls[item.type] || '#';
+
+         let meta = '';
+         if (item.date) meta += `<span><i class="bi bi-calendar3"></i> ${item.date}</span>`;
+         if (item.location) meta += `<span><i class="bi bi-geo-alt"></i> ${item.location}</span>`;
+         if (item.description) meta += `<span>${item.description}</span>`;
+
+         a.innerHTML = `
+        <div class="chat-card-type type-${item.type}"><i class="bi ${icons[item.type]}"></i> ${labels[item.type]}</div>
+        <div class="chat-card-title">${item.title}</div>
+        ${meta ? `<div class="chat-card-meta">${meta}</div>` : ''}
+    `;
+         return a;
+     }
+
+     function renderBotReply(text) {
+         const msgs = document.getElementById('chat-messages');
+         const {
+             plainText,
+             items
+         } = parseStructured(text);
+
+         if (plainText) {
+             const el = document.createElement('div');
+             el.className = 'chat-msg bot';
+             el.textContent = plainText.replace(/\*\*([^*]+)\*\*/g, '$1');
+             msgs.appendChild(el);
+         }
+
+         if (items.length > 0) {
+             const wrapper = document.createElement('div');
+             wrapper.className = 'chat-msg bot-html';
+             items.forEach(item => wrapper.appendChild(makeCard(item)));
+             msgs.appendChild(wrapper);
+         }
+
+         msgs.scrollTop = msgs.scrollHeight;
+     }
+
+     function addChatMsg(role, text, isTyping = false) {
+         const el = document.createElement('div');
+         el.className = 'chat-msg ' + role + (isTyping ? ' typing' : '');
+         el.textContent = text;
+         const msgs = document.getElementById('chat-messages');
+         msgs.appendChild(el);
+         msgs.scrollTop = msgs.scrollHeight;
+         return el;
+     }
+
+     document.addEventListener('DOMContentLoaded', () => {
+         document.getElementById('chat-input').addEventListener('keydown', e => {
+             if (e.key === 'Enter') chatSend();
+         });
+     });
+ </script>
  </body>
 
  </html>
