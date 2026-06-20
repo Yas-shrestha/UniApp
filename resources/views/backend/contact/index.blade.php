@@ -4,118 +4,147 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid p-4">
-                    <div class="pagetitle">
-                        @if (Session::has('message'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ Session('message') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if (Session::has('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ Session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-                        <div class="d-flex justify-content-between">
-                            <h1>Manage contact</h1>
 
+                    @if (Session::has('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ Session::get('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <nav>
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
-                                <li class="breadcrumb-item active">add-contact</li>
-                            </ol>
-                        </nav>
-                    </div><!-- End Page Title -->
-                    <section class="section">
-                        <div class="row">
-                            <div class="card">
-                                <div class="card-body">
-                                    <table
-                                        class="table table-striped table-hover table-bordered table-lg table-responsive-lg">
-                                        <thead>
+                    @endif
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0">Contact Messages</h4>
+                        <div>
+                            <span class="badge bg-danger fs-6 me-2">
+                                <i class="bx bx-envelope me-1"></i> {{ $unreadCount }} Unread
+                            </span>
+                            <a href="{{ route('admin.contact.index') }}" class="btn btn-secondary">
+                                <i class="bx bx-refresh me-1"></i> Refresh
+                            </a>
+                        </div>
+                    </div>
+
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Contact Messages</li>
+                        </ol>
+                    </nav>
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <form method="GET" action="{{ route('admin.contact.index') }}" class="row mb-3">
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" name="search" class="form-control"
+                                        placeholder="Search by name, email or subject" value="{{ request('search') }}">
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <select name="status" class="form-select">
+                                        <option value="">All Status</option>
+                                        <option value="unread" {{ request('status') == 'unread' ? 'selected' : '' }}>Unread
+                                        </option>
+                                        <option value="read" {{ request('status') == 'read' ? 'selected' : '' }}>Read
+                                        </option>
+                                        <option value="replied" {{ request('status') == 'replied' ? 'selected' : '' }}>
+                                            Replied</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-5 mb-2">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                    <a href="{{ route('admin.contact.index') }}" class="btn btn-secondary">Reset</a>
+                                </div>
+                            </form>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>S.N</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Subject</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($messages as $message)
                                             <tr>
-                                                <th scope="col">S.N</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Message</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($contacts as $contact)
-                                                <tr>
-                                                    <th scope="row">{{ $loop->iteration }}</th>
-                                                    <td>{{ $contact->name }}</td>
-                                                    <td>{{ $contact->email }}</td>
-                                                    <td>{{ $contact->message }}</td>
-                                                    <td>
+                                                <td>{{ $loop->iteration + ($messages->currentPage() - 1) * $messages->perPage() }}
+                                                </td>
+                                                <td>
+                                                    <strong>{{ $message->name }}</strong>
+                                                    @if ($message->isUnread())
+                                                        <span class="badge bg-danger ms-1">New</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $message->email }}</td>
+                                                <td>{{ Str::limit($message->subject, 30) }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-{{ $message->isUnread() ? 'danger' : ($message->isReplied() ? 'success' : 'info') }}">
+                                                        {{ $message->status_label }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ $message->created_at->format('Y-m-d') }}</td>
+                                                <td>
+                                                    <a href="{{ route('admin.contact.show', $message->id) }}"
+                                                        class="btn btn-sm btn-secondary">
+                                                        <i class="bx bx-show"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $message->id }}">
+                                                        <i class="bx bx-trash"></i>
+                                                    </button>
 
-                                                        <a href="{{ route('contact.show', $contact->id) }}"
-                                                            class="btn btn-md btn-secondary"><i class="fa fa-eye"
-                                                                aria-hidden="true"></i></a>
-                                                        <!-- Modal trigger button -->
-                                                        <button type="button" class="btn btn-danger btn-md"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#modalId{{ $contact->id }}">
-                                                            <i class="fa-solid fa-trash-can"></i>
-                                                        </button>
-
-                                                        <!-- Modal Body -->
-                                                        <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
-                                                        <div class="modal fade" id="modalId{{ $contact->id }}"
-                                                            tabindex="-1" data-bs-backdrop="static"
-                                                            data-bs-keyboard="false" role="dialog"
-                                                            aria-labelledby="modalTitleId" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="modalTitleId">Delete ??
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <form
-                                                                            action="{{ route('contact.destroy', $contact->id) }}"
-                                                                            method="POST" enctype="multipart/form-data">
-                                                                            @method('delete')
-                                                                            @csrf
-                                                                            <button type="button" class="btn btn-secondary"
-                                                                                data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" name="submit"
-                                                                                class="btn btn-danger"><i
-                                                                                    class="fa-solid fa-trash-can"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
+                                                    <div class="modal fade" id="deleteModal{{ $message->id }}"
+                                                        tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Delete Message</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Are you sure you want to delete message from
+                                                                    "<strong>{{ $message->name }}</strong>"?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Cancel</button>
+                                                                    <form
+                                                                        action="{{ route('admin.contact.destroy', $message->id) }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Delete</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">No messages found.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
 
-
-                                                        <!-- Optional: Place to the bottom of scripts -->
-                                                        <script>
-                                                            const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
-                                                        </script>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <div>
-                                        {{ $contacts->links() }}
-                                    </div>
-                                </div>
+                            <div class="mt-3">
+                                {{ $messages->links() }}
                             </div>
                         </div>
-                    </section>
+                    </div>
+
                 </div>
             </section>
         </div>

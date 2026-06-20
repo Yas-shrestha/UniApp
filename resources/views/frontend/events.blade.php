@@ -44,7 +44,7 @@
                             data-aos-delay="{{ $loop->index * 60 }}">
 
                             <div class="ev-thumb">
-                                <img src="{{ asset($event->image) }}" alt="{{ $event->title }}" />
+                                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}" />
                                 <div class="ev-date-badge">
                                     <span class="d">{{ $event->date->format('d') }}</span>
                                     <span class="m">{{ $event->date->format('M') }}</span>

@@ -9,7 +9,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>PrintifyIt</title>
+    <title>UniAPp</title>
 
     <meta name="description" content="" />
 
@@ -49,7 +49,7 @@
     <script src="{{ asset('backend/assets/js/config.js') }}"></script>
     <script src="https://cdn.tiny.cloud/1/zbfvru5zxg2kslhfo6brsi53e9miexodjf8a14hcjdpkeoox/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
-  
+
 
 </head>
 

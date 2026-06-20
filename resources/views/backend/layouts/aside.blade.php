@@ -5,7 +5,7 @@
             <div class="app-brand demo">
 
                 <a href="" class="app-brand-link">
-                    <span class=" demo menu-text fw-bolder ms-2 fs-3"><span class="text-primary">Print</span>ifyIt
+                    <span class=" demo menu-text fw-bolder ms-2 fs-3"><span class="text-primary">UniApp
                 </a>
 
 
@@ -30,7 +30,7 @@
                 </li>
                 <li class="menu-item {{ Route::is('categories.index') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                        <i class="fa-solid fa-layer-group"></i>
                         <div data-i18n="Account Settings" class="ms-1">Categories</div>
                     </a>
                     <ul class="menu-sub">
@@ -41,7 +41,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-header small text-uppercase">
+                {{-- <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">File and Resources</span>
                 </li>
                 <li class="menu-item {{ Route::is('files.index') ? 'active' : '' }}">
@@ -56,10 +56,39 @@
                             </a>
                         </li>
                     </ul>
+                </li> --}}
+                <li class="menu-item {{ Route::is('admin.registrations.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="fa-solid fa-plus"></i>
+                        <div data-i18n="Account Settings" class="ms-1">event-reservation</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="{{ route('admin.registrations.index') }}" class="menu-link">
+                                <div data-i18n="Notifications">Manage</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-item {{ Route::is('admin.contact.index') ? 'active' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="fa-solid fa-phone"></i>
+                        <div data-i18n="Account Settings" class="ms-1">Contact</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="{{ route('admin.contact.index') }}" class="menu-link">
+                                <div data-i18n="Notifications">Contact</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text">Events & Services</span>
                 </li>
                 <li class="menu-item {{ Route::is('services.index') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
                         <div data-i18n="Account Settings" class="ms-1">service</div>
                     </a>
                     <ul class="menu-sub">

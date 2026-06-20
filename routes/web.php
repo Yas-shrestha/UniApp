@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\EventRegistrationController;
+use App\Http\Controllers\EventRegistrationControllerAdmin;
 
 Route::get('/chatbot', [ChatbotController::class, 'index']);
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat']);
@@ -31,6 +33,7 @@ Route::get('/admin/dashboard', function () {
     return view('backend.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::post('/events/{event}/register', [EventRegistrationController::class, 'store'])->name('events.register');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::middleware('auth')->prefix('/admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,6 +44,22 @@ Route::middleware('auth')->prefix('/admin')->group(function () {
     Route::resource('blogs', BlogController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('files', FileController::class);
+    // event-reservation
+    Route::get('registrations', [EventRegistrationControllerAdmin::class, 'index'])->name('admin.registrations.index');
+    Route::get('registrations/create', [EventRegistrationControllerAdmin::class, 'create'])->name('admin.registrations.create');
+    Route::post('registrations', [EventRegistrationControllerAdmin::class, 'store'])->name('admin.registrations.store');
+    Route::get('registrations/{id}', [EventRegistrationControllerAdmin::class, 'show'])->name('admin.registrations.show');
+    Route::get('registrations/{id}/edit', [EventRegistrationControllerAdmin::class, 'edit'])->name('admin.registrations.edit');
+    Route::put('registrations/{id}', [EventRegistrationControllerAdmin::class, 'update'])->name('admin.registrations.update');
+    Route::delete('registrations/{id}', [EventRegistrationControllerAdmin::class, 'destroy'])->name('admin.registrations.destroy');
+    Route::get('registrations/export/{event?}', [EventRegistrationControllerAdmin::class, 'export'])->name('admin.registrations.export');
+
+
+    Route::get('contact', [ContactController::class, 'index'])->name('admin.contact.index');
+    Route::get('contact/{id}', [ContactController::class, 'show'])->name('admin.contact.show');
+    Route::delete('contact/{id}', [ContactController::class, 'destroy'])->name('admin.contact.destroy');
+    Route::post('contact/{id}/read', [ContactController::class, 'markAsRead'])->name('admin.contact.read');
+    Route::post('contact/{id}/replied', [ContactController::class, 'markAsReplied'])->name('admin.contact.replied');
 });
 
 require __DIR__ . '/auth.php';
