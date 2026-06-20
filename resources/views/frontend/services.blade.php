@@ -33,28 +33,36 @@
                     </a>
                 </div>
 
-                <div class="row gy-4 services-grid" id="servicesGrid">
+                <div class="row gy-4 services-grid">
                     @forelse ($services as $service)
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index + 1) * 100 }}">
                             <div class="service-card h-100 p-4"
-                                style="background: #fff; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                                style="background: #fff; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
                                 @if ($service->icon)
                                     <i class="{{ $service->icon }}" style="font-size: 2rem; color: #2d465e;"></i>
                                 @elseif ($service->image)
                                     <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}"
-                                        class="img-fluid mb-3 rounded" />
+                                        class="img-fluid mb-3 rounded" style="max-height: 80px; object-fit: cover;" />
                                 @endif
                                 <h4 class="mt-3">{{ $service->title }}</h4>
                                 <p class="text-muted">{{ Str::limit($service->short_description, 100) }}</p>
                                 <a href="{{ route('services.detail', $service->slug) }}" class="btn btn-link p-0">Learn
                                     More →</a>
-
                             </div>
                         </div>
                     @empty
-                        <p class="text-center text-muted">No services found.</p>
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">No services found.</p>
+                        </div>
                     @endforelse
                 </div>
+
+                <!-- Pagination -->
+                @if ($services->hasPages())
+                    <div class="mt-5 d-flex justify-content-center">
+                        {{ $services->links() }}
+                    </div>
+                @endif
             </div>
         </section>
     </main>

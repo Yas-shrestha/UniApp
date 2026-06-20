@@ -2,7 +2,9 @@
 
 @section('content')
     <main class="main">
-        <section class="blog-hero">
+
+        <section class="page-banner"
+            style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url('{{ asset('assets/img/hero.png') }}') center/cover no-repeat; padding: 110px 0;">
             <div class="container py-5">
                 <small style="text-transform: uppercase; letter-spacing: 1px; color: rgba(255, 255, 255, 0.8);">News &
                     Blog</small>

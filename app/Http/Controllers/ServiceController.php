@@ -141,4 +141,22 @@ class ServiceController extends Controller
 
         return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }
+    public function filter(Request $request)
+    {
+        $type = $request->get('type');
+
+        if ($type) {
+            $services = Service::where('type', $type)->orderBy('created_at')->get();
+        } else {
+            $services = Service::orderBy('created_at')->get();
+        }
+
+        // If it's an AJAX request, return only the partial view
+        if ($request->ajax() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+            return view('frontend.partials.services-grid', compact('services'))->render();
+        }
+
+        // For regular requests, return the full page
+        return view('frontend.services.index', compact('services', 'type'));
+    }
 }

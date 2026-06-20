@@ -30,6 +30,7 @@ class Event extends Model
     protected $casts = [
         'date'   => 'date',
         'points' => 'array',
+        'seats'  => 'integer', // Add this line
     ];
 
     // ── Relationships ────────────────────────────────────
@@ -37,6 +38,11 @@ class Event extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(EventRegistration::class);
     }
 
     // ── Scopes ──────────────────────────────────────────
@@ -51,12 +57,46 @@ class Event extends Model
         return $query->where('date', '>=', now())->orderBy('date');
     }
 
-    // ── Helpers ─────────────────────────────────────────
+    public function scopePast($query)
+    {
+        return $query->where('date', '<', now())->orderByDesc('date');
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published');
+    }
+
+    // ── Accessors ──────────────────────────────────────
 
     public function getFormattedDateAttribute(): string
     {
         return $this->date->format('d F Y');
     }
+
+    public function getAvailableSeatsAttribute()
+    {
+        $registeredCount = $this->registrations()->where('status', 'confirmed')->count();
+        $seats = (int) $this->seats; // Cast to integer just in case
+        return max(0, $seats - $registeredCount);
+    }
+
+    public function getRegistrationCountAttribute()
+    {
+        return $this->registrations()->count();
+    }
+
+    public function getConfirmedCountAttribute()
+    {
+        return $this->registrations()->where('status', 'confirmed')->count();
+    }
+
+    public function getPendingCountAttribute()
+    {
+        return $this->registrations()->where('status', 'pending')->count();
+    }
+
+    // ── Helpers ─────────────────────────────────────────
 
     public function getRelatedEvents(int $limit = 3)
     {
@@ -66,8 +106,24 @@ class Event extends Model
             ->limit($limit)
             ->get();
     }
-    public function scopePast($query)
+
+    public function isFullyBooked()
     {
-        return $query->where('date', '<', now())->orderByDesc('date');
+        return $this->available_seats <= 0;
+    }
+
+    public function hasAvailableSeats()
+    {
+        return $this->available_seats > 0;
+    }
+
+    public function isUserRegistered($email)
+    {
+        return $this->registrations()->where('email', $email)->exists();
+    }
+
+    public function getUserRegistration($email)
+    {
+        return $this->registrations()->where('email', $email)->first();
     }
 }
