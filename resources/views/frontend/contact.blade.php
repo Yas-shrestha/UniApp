@@ -245,6 +245,38 @@
 
                                         <div class="col-md-6">
                                             <div class="form-floating">
+                                                <input type="text" id="contactCompany" name="company_name"
+                                                    class="form-control rounded-3 @error('company_name') is-invalid @enderror"
+                                                    placeholder="Company Name" value="{{ old('company_name') }}" required />
+                                                <label for="contactCompany">
+                                                    <i class="bi bi-building me-2"></i>Company Name <span
+                                                        class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            @error('company_name')
+                                                <div class="text-danger small mt-1"><i
+                                                        class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" id="contactJobTitle" name="job_title"
+                                                    class="form-control rounded-3 @error('job_title') is-invalid @enderror"
+                                                    placeholder="Job Title" value="{{ old('job_title') }}" required />
+                                                <label for="contactJobTitle">
+                                                    <i class="bi bi-briefcase me-2"></i>Job Title <span
+                                                        class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            @error('job_title')
+                                                <div class="text-danger small mt-1"><i
+                                                        class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-floating">
                                                 <input type="tel" id="contactPhone" name="phone"
                                                     class="form-control rounded-3 @error('phone') is-invalid @enderror"
                                                     placeholder="Phone Number" value="{{ old('phone') }}" />
@@ -258,37 +290,18 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-6">
+
+                                        <div class="col-12">
                                             <div class="form-floating">
-                                                <select id="contactSubject" name="subject"
-                                                    class="form-select rounded-3 @error('subject') is-invalid @enderror"
-                                                    style="height: calc(3.5rem + 2px);" required>
-                                                    <option value="" disabled
-                                                        {{ old('subject') ? '' : 'selected' }}>Select a subject…</option>
-                                                    <option value="Admissions Enquiry"
-                                                        {{ old('subject') == 'Admissions Enquiry' ? 'selected' : '' }}>
-                                                        Admissions Enquiry</option>
-                                                    <option value="Financial Aid"
-                                                        {{ old('subject') == 'Financial Aid' ? 'selected' : '' }}>Financial
-                                                        Aid</option>
-                                                    <option value="Academic Programs"
-                                                        {{ old('subject') == 'Academic Programs' ? 'selected' : '' }}>
-                                                        Academic Programs</option>
-                                                    <option value="Campus Services"
-                                                        {{ old('subject') == 'Campus Services' ? 'selected' : '' }}>Campus
-                                                        Services</option>
-                                                    <option value="General Information"
-                                                        {{ old('subject') == 'General Information' ? 'selected' : '' }}>
-                                                        General Information</option>
-                                                    <option value="Other"
-                                                        {{ old('subject') == 'Other' ? 'selected' : '' }}>Other</option>
-                                                </select>
-                                                <label for="contactSubject">
-                                                    <i class="bi bi-tag me-2"></i>Subject <span
+                                                <input type="text" id="contactJobDetails" name="job_details"
+                                                    class="form-control rounded-3 @error('job_details') is-invalid @enderror"
+                                                    placeholder="Job Details" value="{{ old('job_details') }}" required />
+                                                <label for="contactJobDetails">
+                                                    <i class="bi bi-card-text me-2"></i>Job Details <span
                                                         class="text-danger">*</span>
                                                 </label>
                                             </div>
-                                            @error('subject')
+                                            @error('job_details')
                                                 <div class="text-danger small mt-1"><i
                                                         class="bi bi-exclamation-circle me-1"></i>{{ $message }}</div>
                                             @enderror
@@ -311,8 +324,8 @@
 
                                         <div class="col-12 mt-3">
                                             <button type="submit"
-                                                class="btn btn-primary btn-lg w-100 rounded-3 py-3 fw-semibold"
-                                                style="background: linear-gradient(135deg, #2d465e 0%, #1a2330 100%); border: none; box-shadow: 0 10px 30px rgba(45, 70, 94, 0.25); transition: all 0.3s ease;">
+                                                class="btn btn-lg w-100 rounded-3 py-3 fw-semibold text-white" 
+                                                style="background: #997122; border-color: #997122; box-shadow: 0 10px 30px rgba(45, 70, 94, 0.25); transition: all 0.3s ease;">
                                                 <i class="bi bi-send me-2"></i> Send Message
                                                 <span class="ms-2 opacity-50 small">→</span>
                                             </button>

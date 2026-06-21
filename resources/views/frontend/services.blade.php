@@ -25,7 +25,7 @@
                     </a>
                     <a href="{{ route('services', ['type' => 'traditional']) }}"
                         class="btn btn-filter {{ $type == 'traditional' ? 'active' : '' }}">
-                        <i class="bi bi-mortarboard-fill me-1"></i> Traditional Support
+                        <i class="bi bi-mortarboard-fill me-1"></i> Past
                     </a>
                     <a href="{{ route('services', ['type' => 'future']) }}"
                         class="btn btn-filter {{ $type == 'future' ? 'active' : '' }}">

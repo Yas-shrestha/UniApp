@@ -7,7 +7,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">{{ $service->title }}</h4>
-                        <a href="{{ route('services.index') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.services.index') }}" class="btn btn-primary">
                             <i class="bx bx-list-ul"></i>
                         </a>
                     </div>
@@ -15,7 +15,7 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('services.index') }}">Services</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.services.index') }}">Services</a></li>
                             <li class="breadcrumb-item active">{{ $service->title }}</li>
                         </ol>
                     </nav>
@@ -76,7 +76,7 @@
                                             @endif
                                             <div class="card-body">
                                                 <h6 class="card-title">{{ $related->title }}</h6>
-                                                <a href="{{ route('services.show', $related->slug) }}"
+                                                <a href="{{ route('admin.services.show', $related->slug) }}"
                                                     class="btn btn-sm btn-secondary">View</a>
                                             </div>
                                         </div>
@@ -90,7 +90,7 @@
                             <h5>All Services</h5>
                             <ul>
                                 @foreach ($allServices as $s)
-                                    <li><a href="{{ route('services.show', $s->slug) }}">{{ $s->title }}</a></li>
+                                    <li><a href="{{ route('admin.services.show', $s->slug) }}">{{ $s->title }}</a></li>
                                 @endforeach
                             </ul>
                         </div>

@@ -50,7 +50,7 @@ class CategoryController extends Controller
     {
         $events = $category->events()->upcoming()->paginate(5);
 
-        return view('backend.categories.show', compact('category', 'events'));
+        return view('backend.categories.view', compact('category', 'events'));
     }
 
     /**

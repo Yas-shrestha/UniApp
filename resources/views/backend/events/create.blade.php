@@ -7,7 +7,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Add Event</h4>
-                        <a href="{{ route('events.index') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.events.index') }}" class="btn btn-primary">
                             <i class="bx bx-list-ul"></i>
                         </a>
                     </div>
@@ -15,14 +15,14 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Events</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.events.index') }}">Events</a></li>
                             <li class="breadcrumb-item active">Add</li>
                         </ol>
                     </nav>
 
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="row">
@@ -193,7 +193,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="{{ route('events.index') }}" class="btn btn-secondary">Cancel</a>
+                                <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">Cancel</a>
                             </form>
                         </div>
                     </div>

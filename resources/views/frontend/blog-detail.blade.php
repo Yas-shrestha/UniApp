@@ -10,7 +10,7 @@
                 <div class="ed-breadcrumb banner-breadcrumb">
                     <a href="{{ route('home') }}">Home</a>
                     <span class="sep">/</span>
-                    <a href="{{ route('blogs.index') }}">Blog</a>
+                    <a href="{{ route('blogs') }}">Blog</a>
                     <span class="sep">/</span>
                     <span>{{ $blog->title }}</span>
                 </div>

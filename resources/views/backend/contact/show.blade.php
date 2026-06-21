@@ -56,8 +56,16 @@
                                         <div class="col-md-9">{{ $message->phone ?? 'N/A' }}</div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-3 fw-bold">Subject</div>
-                                        <div class="col-md-9">{{ $message->subject }}</div>
+                                        <div class="col-md-3 fw-bold">Company</div>
+                                        <div class="col-md-9">{{ $message->company_name }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3 fw-bold">Job Title</div>
+                                        <div class="col-md-9">{{ $message->job_title }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3 fw-bold">Job Details</div>
+                                        <div class="col-md-9">{{ $message->job_details }}</div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-3 fw-bold">Message</div>

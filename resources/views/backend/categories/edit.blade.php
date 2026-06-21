@@ -7,7 +7,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Edit Category</h4>
-                        <a href="{{ route('categories.index') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.categories.index') }}" class="btn btn-primary">
                             <i class="bx bx-list-ul"></i>
                         </a>
                     </div>
@@ -15,14 +15,14 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">Categories</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Categories</a></li>
                             <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </nav>
 
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('categories.update', $category->id) }}" method="POST">
+                            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
@@ -37,7 +37,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('categories.index') }}" class="btn btn-secondary">Cancel</a>
+                                <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">Cancel</a>
                             </form>
                         </div>
                     </div>

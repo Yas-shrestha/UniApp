@@ -14,7 +14,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Manage Blogs</h4>
-                        <a href="{{ route('blogs.create') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.blogs.create') }}" class="btn btn-primary">
                             <i class="bx bx-plus me-1"></i> Add Blog
                         </a>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <form method="GET" action="{{ route('blogs.index') }}" class="row mb-3">
+                            <form method="GET" action="{{ route('admin.blogs.index') }}" class="row mb-3">
                                 <div class="col-md-4 mb-2">
                                     <input type="text" name="search" class="form-control" placeholder="Search blogs..."
                                         value="{{ $search }}">
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <button type="submit" class="btn btn-primary">Filter</button>
-                                    <a href="{{ route('blogs.index') }}" class="btn btn-secondary">Reset</a>
+                                    <a href="{{ route('admin.blogs.index') }}" class="btn btn-secondary">Reset</a>
                                 </div>
                             </form>
 
@@ -90,11 +90,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('blogs.show', $blog->slug) }}"
+                                                    <a href="{{ route('admin.blogs.show', $blog->slug) }}"
                                                         class="btn btn-sm btn-secondary">
                                                         <i class="bx bx-show"></i>
                                                     </a>
-                                                    <a href="{{ route('blogs.edit', $blog->id) }}"
+                                                    <a href="{{ route('admin.blogs.edit', $blog->id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i class="bx bx-edit"></i>
                                                     </a>
@@ -120,7 +120,7 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
-                                                                    <form action="{{ route('blogs.destroy', $blog->id) }}"
+                                                                    <form action="{{ route('admin.blogs.destroy', $blog->id) }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('DELETE')

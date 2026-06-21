@@ -14,7 +14,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Manage Categories</h4>
-                        <a href="{{ route('categories.create') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
                             <i class="bx bx-plus me-1"></i> Add Category
                         </a>
                     </div>
@@ -48,11 +48,11 @@
                                                 <td>{{ $category->slug }}</td>
                                                 <td>{{ $category->events_count }}</td>
                                                 <td>
-                                                    <a href="{{ route('categories.show', $category->id) }}"
+                                                    <a href="{{ route('admin.categories.show', $category->id) }}"
                                                         class="btn btn-sm btn-secondary">
                                                         <i class="bx bx-show"></i>
                                                     </a>
-                                                    <a href="{{ route('categories.edit', $category->id) }}"
+                                                    <a href="{{ route('admin.categories.edit', $category->id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i class="bx bx-edit"></i>
                                                     </a>
@@ -79,7 +79,7 @@
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <form
-                                                                        action="{{ route('categories.destroy', $category->id) }}"
+                                                                        action="{{ route('admin.categories.destroy', $category->id) }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('DELETE')

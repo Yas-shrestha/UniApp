@@ -37,7 +37,7 @@
                             <form method="GET" action="{{ route('admin.contact.index') }}" class="row mb-3">
                                 <div class="col-md-4 mb-2">
                                     <input type="text" name="search" class="form-control"
-                                        placeholder="Search by name, email or subject" value="{{ request('search') }}">
+                                        placeholder="Search by name, email, company or job title" value="{{ request('search') }}">
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <select name="status" class="form-select">
@@ -63,7 +63,7 @@
                                             <th>S.N</th>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Subject</th>
+                                            <th>Company</th>
                                             <th>Status</th>
                                             <th>Date</th>
                                             <th>Action</th>
@@ -81,7 +81,7 @@
                                                     @endif
                                                 </td>
                                                 <td>{{ $message->email }}</td>
-                                                <td>{{ Str::limit($message->subject, 30) }}</td>
+                                                <td>{{ Str::limit($message->company_name, 30) }}</td>
                                                 <td>
                                                     <span
                                                         class="badge bg-{{ $message->isUnread() ? 'danger' : ($message->isReplied() ? 'success' : 'info') }}">

@@ -7,7 +7,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">{{ $event->title }}</h4>
-                        <a href="{{ route('events.index') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.events.index') }}" class="btn btn-primary">
                             <i class="bx bx-list-ul"></i>
                         </a>
                     </div>
@@ -15,7 +15,7 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('events.index') }}">Events</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.events.index') }}">Events</a></li>
                             <li class="breadcrumb-item active">{{ $event->title }}</li>
                         </ol>
                     </nav>
@@ -75,7 +75,7 @@
                                             @endif
                                             <div class="card-body">
                                                 <h6 class="card-title">{{ $related->title }}</h6>
-                                                <a href="{{ route('events.show', $related->slug) }}"
+                                                <a href="{{ route('admin.events.show', $related->slug) }}"
                                                     class="btn btn-sm btn-secondary">View</a>
                                             </div>
                                         </div>

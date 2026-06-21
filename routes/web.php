@@ -35,7 +35,7 @@ Route::get('/admin/dashboard', function () {
 Route::post('/events/{event}/register', [EventRegistrationController::class, 'store'])->name('events.register');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-Route::middleware('auth')->prefix('/admin')->group(function () {
+Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -45,21 +45,21 @@ Route::middleware('auth')->prefix('/admin')->group(function () {
     Route::resource('services', ServiceController::class);
     Route::resource('files', FileController::class);
     // event-reservation
-    Route::get('registrations', [EventRegistrationControllerAdmin::class, 'index'])->name('admin.registrations.index');
-    Route::get('registrations/create', [EventRegistrationControllerAdmin::class, 'create'])->name('admin.registrations.create');
-    Route::post('registrations', [EventRegistrationControllerAdmin::class, 'store'])->name('admin.registrations.store');
-    Route::get('registrations/{id}', [EventRegistrationControllerAdmin::class, 'show'])->name('admin.registrations.show');
-    Route::get('registrations/{id}/edit', [EventRegistrationControllerAdmin::class, 'edit'])->name('admin.registrations.edit');
-    Route::put('registrations/{id}', [EventRegistrationControllerAdmin::class, 'update'])->name('admin.registrations.update');
-    Route::delete('registrations/{id}', [EventRegistrationControllerAdmin::class, 'destroy'])->name('admin.registrations.destroy');
-    Route::get('registrations/export/{event?}', [EventRegistrationControllerAdmin::class, 'export'])->name('admin.registrations.export');
+    Route::get('registrations', [EventRegistrationControllerAdmin::class, 'index'])->name('registrations.index');
+    Route::get('registrations/create', [EventRegistrationControllerAdmin::class, 'create'])->name('registrations.create');
+    Route::post('registrations', [EventRegistrationControllerAdmin::class, 'store'])->name('registrations.store');
+    Route::get('registrations/{id}', [EventRegistrationControllerAdmin::class, 'show'])->name('registrations.show');
+    Route::get('registrations/{id}/edit', [EventRegistrationControllerAdmin::class, 'edit'])->name('registrations.edit');
+    Route::put('registrations/{id}', [EventRegistrationControllerAdmin::class, 'update'])->name('registrations.update');
+    Route::delete('registrations/{id}', [EventRegistrationControllerAdmin::class, 'destroy'])->name('registrations.destroy');
+    Route::get('registrations/export/{event?}', [EventRegistrationControllerAdmin::class, 'export'])->name('registrations.export');
 
 
-    Route::get('contact', [ContactController::class, 'index'])->name('admin.contact.index');
-    Route::get('contact/{id}', [ContactController::class, 'show'])->name('admin.contact.show');
-    Route::delete('contact/{id}', [ContactController::class, 'destroy'])->name('admin.contact.destroy');
-    Route::post('contact/{id}/read', [ContactController::class, 'markAsRead'])->name('admin.contact.read');
-    Route::post('contact/{id}/replied', [ContactController::class, 'markAsReplied'])->name('admin.contact.replied');
+    Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('contact/{id}', [ContactController::class, 'show'])->name('contact.show');
+    Route::delete('contact/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
+    Route::post('contact/{id}/read', [ContactController::class, 'markAsRead'])->name('contact.read');
+    Route::post('contact/{id}/replied', [ContactController::class, 'markAsReplied'])->name('contact.replied');
 });
 
 require __DIR__ . '/auth.php';

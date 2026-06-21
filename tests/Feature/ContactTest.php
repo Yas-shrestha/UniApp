@@ -10,6 +10,19 @@ class ContactTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function validContactData(array $overrides = []): array
+    {
+        return array_merge([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'company_name' => 'Acme Corporation',
+            'job_title' => 'Admissions Coordinator',
+            'job_details' => 'Looking for information about undergraduate admissions',
+            'phone' => '+1234567890',
+            'message' => 'I would like to know more about admissions.',
+        ], $overrides);
+    }
+
     /** @test */
     public function it_shows_contact_page()
     {
@@ -22,23 +35,17 @@ class ContactTest extends TestCase
     /** @test */
     public function it_can_store_contact_message()
     {
-        $data = [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'phone' => '+1234567890',
-            'subject' => 'Admissions Enquiry',
-            'message' => 'I would like to know more about admissions.',
-        ];
-
-        $response = $this->post(route('contact.store'), $data);
+        $response = $this->post(route('contact.store'), $this->validContactData());
 
         $response->assertRedirect();
         $response->assertSessionHas('success');
 
-        $this->assertDatabaseHas('contact', [
+        $this->assertDatabaseHas('contacts', [
             'name' => 'John Doe',
             'email' => 'john@example.com',
-            'subject' => 'Admissions Enquiry',
+            'company_name' => 'Acme Corporation',
+            'job_title' => 'Admissions Coordinator',
+            'job_details' => 'Looking for information about undergraduate admissions',
             'status' => 'unread',
         ]);
     }
@@ -48,18 +55,15 @@ class ContactTest extends TestCase
     {
         $response = $this->post(route('contact.store'), []);
 
-        $response->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
+        $response->assertSessionHasErrors(['name', 'email', 'company_name', 'job_title', 'job_details', 'message']);
     }
 
     /** @test */
     public function it_validates_email_format()
     {
-        $data = [
-            'name' => 'John Doe',
+        $data = $this->validContactData([
             'email' => 'invalid-email',
-            'subject' => 'Test Subject',
-            'message' => 'Test message',
-        ];
+        ]);
 
         $response = $this->post(route('contact.store'), $data);
 
@@ -69,12 +73,9 @@ class ContactTest extends TestCase
     /** @test */
     public function it_validates_minimum_message_length()
     {
-        $data = [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'subject' => 'Test Subject',
+        $data = $this->validContactData([
             'message' => 'Short',
-        ];
+        ]);
 
         $response = $this->post(route('contact.store'), $data);
 
@@ -84,12 +85,9 @@ class ContactTest extends TestCase
     /** @test */
     public function it_validates_max_message_length()
     {
-        $data = [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'subject' => 'Test Subject',
+        $data = $this->validContactData([
             'message' => str_repeat('a', 1001),
-        ];
+        ]);
 
         $response = $this->post(route('contact.store'), $data);
 

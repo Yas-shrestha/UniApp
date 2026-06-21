@@ -12,8 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
+            $table->string('company_name');
+            $table->string('job_title');
+            $table->string('job_details');
             $table->string('phone')->nullable();
-            $table->string('subject');
             $table->text('message');
             $table->string('status')->default('unread'); // unread, read, replied
             $table->timestamp('read_at')->nullable();

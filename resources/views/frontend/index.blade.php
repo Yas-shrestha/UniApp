@@ -14,7 +14,7 @@
                                 Future of Work
                             </h1>
                             <div class="hero-buttons">
-                                <a href="{{ route('services.index') }}" class="btn btn-primary">Schedule Demo</a>
+                                <a href="{{ route('services') }}" class="btn btn-primary">Schedule Demo</a>
                             </div>
                         </div>
                     </div>
@@ -361,9 +361,9 @@
                         </p>
                     </div>
 
-                    @if (Route::has('blogs.index'))
+                    @if (Route::has('blogs'))
                         <div class="text-center text-md-end">
-                            <a href="{{ route('blogs.index') }}" class="course-link text-decoration-none">
+                            <a href="{{ route('blogs') }}" class="course-link text-decoration-none">
                                 View All Articles <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>

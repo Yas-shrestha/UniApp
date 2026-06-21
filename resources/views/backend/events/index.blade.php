@@ -14,7 +14,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="mb-0">Manage Events</h4>
-                        <a href="{{ route('events.create') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.events.create') }}" class="btn btn-primary">
                             <i class="bx bx-plus me-1"></i> Add Event
                         </a>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <form method="GET" action="{{ route('events.index') }}" class="row mb-3">
+                            <form method="GET" action="{{ route('admin.events.index') }}" class="row mb-3">
                                 <div class="col-md-4 mb-2">
                                     <select name="category" class="form-select">
                                         <option value="">All Categories</option>
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <button type="submit" class="btn btn-primary">Filter</button>
-                                    <a href="{{ route('events.index') }}" class="btn btn-secondary">Reset</a>
+                                    <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">Reset</a>
                                 </div>
                             </form>
 
@@ -78,11 +78,11 @@
                                                 <td>{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}</td>
                                                 <td>{{ $event->location }}</td>
                                                 <td>
-                                                    <a href="{{ route('events.show', $event->slug) }}"
+                                                    <a href="{{ route('admin.events.show', $event->slug) }}"
                                                         class="btn btn-sm btn-secondary">
                                                         <i class="bx bx-show"></i>
                                                     </a>
-                                                    <a href="{{ route('events.edit', $event->id) }}"
+                                                    <a href="{{ route('admin.events.edit', $event->id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i class="bx bx-edit"></i>
                                                     </a>
@@ -109,7 +109,7 @@
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <form
-                                                                        action="{{ route('events.destroy', $event->id) }}"
+                                                                        action="{{ route('admin.events.destroy', $event->id) }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('DELETE')

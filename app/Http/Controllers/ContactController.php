@@ -21,7 +21,9 @@ class ContactController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('subject', 'like', "%{$search}%");
+                    ->orWhere('company_name', 'like', "%{$search}%")
+                    ->orWhere('job_title', 'like', "%{$search}%")
+                    ->orWhere('job_details', 'like', "%{$search}%");
             });
         }
 
@@ -36,8 +38,10 @@ class ContactController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'company_name' => 'required|string|max:255',
+            'job_title' => 'required|string|max:255',
+            'job_details' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
-            'subject' => 'required|string|max:255',
             'message' => 'required|string|min:10|max:1000',
         ]);
 
@@ -45,8 +49,10 @@ class ContactController extends Controller
         $contact = Contact::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'company_name' => $validated['company_name'],
+            'job_title' => $validated['job_title'],
+            'job_details' => $validated['job_details'],
             'phone' => $validated['phone'] ?? null,
-            'subject' => $validated['subject'],
             'message' => $validated['message'],
             'status' => 'unread',
         ]);
