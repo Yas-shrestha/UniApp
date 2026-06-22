@@ -31,10 +31,12 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="title" class="form-label">Title</label>
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                            id="title" name="title" value="{{ old('title', $blog->title) }}">
+                                            id="title" name="title" value="{{ old('title', $blog->title) }}"
+                                            oninput="filterAlphaField(this)">
                                         @error('title')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <div class="text-danger small d-none" id="title-invalid-char">You cant add number in this field</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
@@ -57,10 +59,12 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="author" class="form-label">Author</label>
                                         <input type="text" class="form-control @error('author') is-invalid @enderror"
-                                            id="author" name="author" value="{{ old('author', $blog->author) }}">
+                                            id="author" name="author" value="{{ old('author', $blog->author) }}"
+                                            oninput="filterAlphaField(this)">
                                         @error('author')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <div class="text-danger small d-none invalid-char">You cant add number in this field</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">

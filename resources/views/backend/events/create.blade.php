@@ -29,10 +29,12 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="title" class="form-label">Title</label>
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                            id="title" name="title" value="{{ old('title') }}">
+                                            id="title" name="title" value="{{ old('title') }}"
+                                            oninput="filterTitle(this)">
                                         @error('title')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <div class="text-danger small d-none" id="title-invalid-char">You cant add number in this field</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">

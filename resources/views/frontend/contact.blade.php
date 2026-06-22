@@ -515,3 +515,101 @@
         }
     </style>
 @endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('contactName');
+            const phoneInput = document.getElementById('contactPhone');
+            const form = nameInput.closest('form');
+
+            // Name field validation - prevent numbers
+            nameInput.addEventListener('input', function() {
+                const nameError = this.parentElement.nextElementSibling;
+                const value = this.value;
+                const hasNumbers = /\d/.test(value);
+
+                if (hasNumbers) {
+                    // Remove numbers from input
+                    this.value = value.replace(/\d/g, '');
+                    
+                    // Show error message
+                    if (!nameError || !nameError.classList.contains('text-danger')) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'text-danger small mt-1';
+                        errorDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>This field doesn\'t accept numbers.';
+                        
+                        // Remove existing error if any
+                        const existingError = this.parentElement.nextElementSibling;
+                        if (existingError && existingError.classList.contains('text-danger')) {
+                            existingError.remove();
+                        }
+                        
+                        this.parentElement.parentElement.appendChild(errorDiv);
+                        
+                        // Auto-hide error after 3 seconds
+                        setTimeout(() => {
+                            if (errorDiv && errorDiv.parentElement) {
+                                errorDiv.remove();
+                            }
+                        }, 3000);
+                    }
+                }
+            });
+
+            // Phone field validation - prevent letters
+            phoneInput.addEventListener('input', function() {
+                const phoneError = this.parentElement.nextElementSibling;
+                const value = this.value;
+                const hasLetters = /[a-zA-Z]/.test(value);
+
+                if (hasLetters) {
+                    // Remove letters from input
+                    this.value = value.replace(/[a-zA-Z]/g, '');
+                    
+                    // Show error message
+                    if (!phoneError || !phoneError.classList.contains('text-danger')) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'text-danger small mt-1';
+                        errorDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>This field doesn\'t accept letters.';
+                        
+                        // Remove existing error if any
+                        const existingError = this.parentElement.nextElementSibling;
+                        if (existingError && existingError.classList.contains('text-danger')) {
+                            existingError.remove();
+                        }
+                        
+                        this.parentElement.parentElement.appendChild(errorDiv);
+                        
+                        // Auto-hide error after 3 seconds
+                        setTimeout(() => {
+                            if (errorDiv && errorDiv.parentElement) {
+                                errorDiv.remove();
+                            }
+                        }, 3000);
+                    }
+                }
+            });
+
+            // Form submit validation
+            form.addEventListener('submit', function(e) {
+                const nameValue = nameInput.value.trim();
+                const phoneValue = phoneInput.value.trim();
+
+                // Validate name doesn't contain numbers
+                if (/\d/.test(nameValue)) {
+                    e.preventDefault();
+                    nameInput.focus();
+                    return false;
+                }
+
+                // Validate phone doesn't contain letters
+                if (/[a-zA-Z]/.test(phoneValue)) {
+                    e.preventDefault();
+                    phoneInput.focus();
+                    return false;
+                }
+            });
+        });
+    </script>
+@endpush

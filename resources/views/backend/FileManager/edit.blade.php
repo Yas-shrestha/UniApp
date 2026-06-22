@@ -31,7 +31,9 @@
                                                     <label for="exampleInputEmail1" class="form-label">Title</label>
                                                     <input type="text" class="form-control" id="exampleInputEmail1"
                                                         aria-describedby="emailHelp" name="title"
-                                                        value="{{ $file->title }}">
+                                                        value="{{ $file->title }}"
+                                                        oninput="filterTitle(this)">
+                                                    <div class="text-danger small d-none" id="title-invalid-char">You cant add number in this field</div>
                                                 </div>
                                                 <img src="/uploads/{{ $file->img }}" width="200px" height="200px"
                                                     alt="no">

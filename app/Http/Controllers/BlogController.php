@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -16,13 +15,13 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all();
-        $category   = $request->query('category');
-        $search     = $request->query('search');
+        $category = $request->query('category');
+        $search = $request->query('search');
 
         $blogs = Blog::with('category')
             ->published()
-            ->when($category, fn($q) => $q->byCategory($category))
-            ->when($search, fn($q) => $q->search($search))
+            ->when($category, fn ($q) => $q->byCategory($category))
+            ->when($search, fn ($q) => $q->search($search))
             ->paginate(6)
             ->withQueryString();
 
@@ -47,17 +46,17 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'category_id'  => 'required|exists:categories,id',
-            'title'        => 'required|string|max:255',
-            'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'author'       => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string|max:255|not_regex:/\d/',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'author' => 'required|string|max:255|not_regex:/\d/',
             'published_at' => 'required|date',
-            'excerpt'      => 'required|string|max:500',
-            'body'         => 'required|string',
-            'quick_links'  => 'nullable|array',
+            'excerpt' => 'required|string|max:500',
+            'body' => 'required|string',
+            'quick_links' => 'nullable|array',
             'quick_links.*.label' => 'required_with:quick_links|string',
-            'quick_links.*.url'   => 'required_with:quick_links|string',
-            'is_featured'  => 'boolean',
+            'quick_links.*.url' => 'required_with:quick_links|string',
+            'is_featured' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -101,17 +100,17 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog)
     {
         $validated = $request->validate([
-            'category_id'  => 'required|exists:categories,id',
-            'title'        => 'required|string|max:255',
-            'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'author'       => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string|max:255|not_regex:/\d/',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'author' => 'required|string|max:255|not_regex:/\d/',
             'published_at' => 'required|date',
-            'excerpt'      => 'required|string|max:500',
-            'body'         => 'required|string',
-            'quick_links'  => 'nullable|array',
+            'excerpt' => 'required|string|max:500',
+            'body' => 'required|string',
+            'quick_links' => 'nullable|array',
             'quick_links.*.label' => 'required_with:quick_links|string',
-            'quick_links.*.url'   => 'required_with:quick_links|string',
-            'is_featured'  => 'boolean',
+            'quick_links.*.url' => 'required_with:quick_links|string',
+            'is_featured' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);

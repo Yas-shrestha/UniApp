@@ -16,6 +16,7 @@ class FileController extends Controller
     {
         $files = new File;
         $files = $files->paginate(4);
+
         return view('backend.FileManager.index', compact('files'));
     }
 
@@ -35,14 +36,15 @@ class FileController extends Controller
         $file = new File;
         $request->validate([
             'img' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-            'title' => 'required|max:100'
+            'title' => 'required|max:100|not_regex:/\d/',
         ]);
-        $fileName = Str::slug($request->title)  . '-' . time() . '.' . $request->img->extension();
+        $fileName = Str::slug($request->title).'-'.time().'.'.$request->img->extension();
         $request->img->move(public_path('uploads'), $fileName);
         $file->title = $request->title;
         $file->img = $fileName;
 
         $file->save();
+
         return redirect('/admin/file')->with('success', 'Your data is submitted ');
     }
 
@@ -53,6 +55,7 @@ class FileController extends Controller
     {
         $file = new File;
         $file = $file->where('id', $id)->First();
+
         return view('backend.FileManager.show', compact('file'));
     }
 
@@ -63,6 +66,7 @@ class FileController extends Controller
     {
         $file = new File;
         $file = $file->where('id', $id)->First();
+
         return view('backend.FileManager.edit', compact('file'));
     }
 
@@ -73,18 +77,19 @@ class FileController extends Controller
     {
         $request->validate([
             'img' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'title' => 'required|max:100'
+            'title' => 'required|max:100|not_regex:/\d/',
         ]);
         $file = new File;
         $file = $file->where('id', $id)->First();
         $file->title = $request->title;
-        if ($request->img != NULL) {
-            $fileName = Str::slug($request->title) . "-" . time() . '.' . $request->img->extension();
-            Files::delete(public_path('uploads/' . $file->img));
+        if ($request->img != null) {
+            $fileName = Str::slug($request->title).'-'.time().'.'.$request->img->extension();
+            Files::delete(public_path('uploads/'.$file->img));
             $request->img->move(public_path('uploads'), $fileName);
             $file->img = $fileName;
         }
         $file->update();
+
         return redirect('admin/file')->with('success', 'Your data have been updated');
     }
 
@@ -94,8 +99,9 @@ class FileController extends Controller
     public function destroy($id)
     {
         $file = File::find($id);
-        Files::delete(public_path('uploads/' . $file->img));
+        Files::delete(public_path('uploads/'.$file->img));
         $file->delete();
+
         return redirect('/admin/file')->with('success', 'Your data has been deleted');
     }
 }

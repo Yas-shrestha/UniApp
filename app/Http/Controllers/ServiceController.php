@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -16,7 +15,7 @@ class ServiceController extends Controller
     {
         $type = $request->query('type');
 
-        $services = Service::when($type, fn($q) => $q->byType($type))
+        $services = Service::when($type, fn ($q) => $q->byType($type))
             ->latest()
             ->get();
 
@@ -37,17 +36,17 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type'               => 'required|in:traditional,future',
-            'title'              => 'required|string|max:255',
-            'image'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'icon'               => 'nullable|string|max:100',
-            'short_description'  => 'nullable|string|max:500',
-            'body'               => 'required|string',
-            'points'             => 'nullable|array',
-            'points.*'           => 'required|string',
-            'catalog_pdf'        => 'nullable|file|mimes:pdf|max:5120',
-            'catalog_doc'        => 'nullable|file|mimes:doc,docx|max:5120',
-            'is_featured'        => 'boolean',
+            'type' => 'required|in:traditional,future',
+            'title' => 'required|string|max:255|not_regex:/\d/',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'icon' => 'nullable|string|max:100',
+            'short_description' => 'nullable|string|max:500',
+            'body' => 'required|string',
+            'points' => 'nullable|array',
+            'points.*' => 'required|string',
+            'catalog_pdf' => 'nullable|file|mimes:pdf|max:5120',
+            'catalog_doc' => 'nullable|file|mimes:doc,docx|max:5120',
+            'is_featured' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -78,7 +77,7 @@ class ServiceController extends Controller
     {
         $service = Service::where('slug', $slug)->firstOrFail();
 
-        $allServices   = Service::orderBy('title')->get();
+        $allServices = Service::orderBy('title')->get();
         $relatedServices = $service->getRelatedServices();
 
         return view('backend.services.view', compact('service', 'allServices', 'relatedServices'));
@@ -98,17 +97,17 @@ class ServiceController extends Controller
     public function update(Request $request, Service $service)
     {
         $validated = $request->validate([
-            'type'               => 'required|in:traditional,future',
-            'title'              => 'required|string|max:255',
-            'image'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'icon'               => 'nullable|string|max:100',
-            'short_description'  => 'nullable|string|max:500',
-            'body'               => 'required|string',
-            'points'             => 'nullable|array',
-            'points.*'           => 'required|string',
-            'catalog_pdf'        => 'nullable|file|mimes:pdf|max:5120',
-            'catalog_doc'        => 'nullable|file|mimes:doc,docx|max:5120',
-            'is_featured'        => 'boolean',
+            'type' => 'required|in:traditional,future',
+            'title' => 'required|string|max:255|not_regex:/\d/',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'icon' => 'nullable|string|max:100',
+            'short_description' => 'nullable|string|max:500',
+            'body' => 'required|string',
+            'points' => 'nullable|array',
+            'points.*' => 'required|string',
+            'catalog_pdf' => 'nullable|file|mimes:pdf|max:5120',
+            'catalog_doc' => 'nullable|file|mimes:doc,docx|max:5120',
+            'is_featured' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -141,6 +140,7 @@ class ServiceController extends Controller
 
         return redirect()->route('services')->with('success', 'Service deleted successfully.');
     }
+
     public function filter(Request $request)
     {
         $type = $request->get('type');

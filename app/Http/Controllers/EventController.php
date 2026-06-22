@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -16,11 +15,11 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all();
-        $category   = $request->query('category');
+        $category = $request->query('category');
 
         $events = Event::with('category')
             ->upcoming()
-            ->when($category, fn($q) => $q->byCategory($category))
+            ->when($category, fn ($q) => $q->byCategory($category))
             ->paginate(5)
             ->withQueryString();
 
@@ -43,20 +42,20 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'category_id'   => 'required|exists:categories,id',
-            'title'         => 'required|string|max:255',
-            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'date'          => 'required|date',
-            'time'          => 'required|string|max:100',
-            'location'      => 'required|string|max:255',
-            'seats'         => 'required|string|max:100',
-            'admission'     => 'nullable|string|max:255',
-            'intro'         => 'required|string',
-            'points'        => 'required|array|min:1',
-            'points.*'      => 'required|string',
-            'audience'      => 'required|string',
-            'speaker_name'  => 'required|string|max:255',
-            'speaker_role'  => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string|max:255|not_regex:/\d/',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'date' => 'required|date',
+            'time' => 'required|string|max:100',
+            'location' => 'required|string|max:255',
+            'seats' => 'required|string|max:100',
+            'admission' => 'nullable|string|max:255',
+            'intro' => 'required|string',
+            'points' => 'required|array|min:1',
+            'points.*' => 'required|string',
+            'audience' => 'required|string',
+            'speaker_name' => 'required|string|max:255',
+            'speaker_role' => 'required|string|max:255',
             'speaker_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -103,20 +102,20 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $validated = $request->validate([
-            'category_id'   => 'required|exists:categories,id',
-            'title'         => 'required|string|max:255',
-            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'date'          => 'required|date',
-            'time'          => 'required|string|max:100',
-            'location'      => 'required|string|max:255',
-            'seats'         => 'required|string|max:100',
-            'admission'     => 'nullable|string|max:255',
-            'intro'         => 'required|string',
-            'points'        => 'required|array|min:1',
-            'points.*'      => 'required|string',
-            'audience'      => 'required|string',
-            'speaker_name'  => 'required|string|max:255',
-            'speaker_role'  => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string|max:255|not_regex:/\d/',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'date' => 'required|date',
+            'time' => 'required|string|max:100',
+            'location' => 'required|string|max:255',
+            'seats' => 'required|string|max:100',
+            'admission' => 'nullable|string|max:255',
+            'intro' => 'required|string',
+            'points' => 'required|array|min:1',
+            'points.*' => 'required|string',
+            'audience' => 'required|string',
+            'speaker_name' => 'required|string|max:255',
+            'speaker_role' => 'required|string|max:255',
             'speaker_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 

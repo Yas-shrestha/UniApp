@@ -29,10 +29,12 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="title" class="form-label">Title</label>
                                         <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                            id="title" name="title" value="{{ old('title') }}">
+                                            id="title" name="title" value="{{ old('title') }}"
+                                            oninput="filterAlphaField(this)">
                                         @error('title')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <div class="text-danger small d-none" id="title-invalid-char">You cant add number in this field</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
@@ -55,17 +57,20 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="author" class="form-label">Author</label>
                                         <input type="text" class="form-control @error('author') is-invalid @enderror"
-                                            id="author" name="author" value="{{ old('author') }}">
+                                            id="author" name="author" value="{{ old('author') }}"
+                                            oninput="filterAlphaField(this)">
                                         @error('author')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <div class="text-danger small d-none invalid-char">You cant add number in this field</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="published_at" class="form-label">Published At</label>
                                         <input type="date"
                                             class="form-control @error('published_at') is-invalid @enderror"
-                                            id="published_at" name="published_at" value="{{ old('published_at') }}">
+                                            id="published_at" name="published_at"
+                                            value="{{ old('published_at', now()->format('Y-m-d')) }}">
                                         @error('published_at')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

@@ -32,6 +32,19 @@
                 @if (session('error'))
                     toastr.error('{{ session('error') }}')
                 @endif
+
+                function filterAlphaField(input) {
+                    const invalidMessage = input.closest('.mb-3').querySelector('.invalid-char');
+                    const cleaned = input.value.replace(/\d/g, '');
+                    if (input.value !== cleaned) {
+                        input.value = cleaned;
+                        if (invalidMessage) {
+                            invalidMessage.classList.remove('d-none');
+                        }
+                    } else if (invalidMessage) {
+                        invalidMessage.classList.add('d-none');
+                    }
+                }
             </script>
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
@@ -32,18 +32,11 @@ class ContactController extends Controller
 
         return view('backend.contact.index', compact('messages', 'unreadCount'));
     }
-    public function store(Request $request)
+
+    public function store(StoreContactRequest $request)
     {
         // Validate the request
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'company_name' => 'required|string|max:255',
-            'job_title' => 'required|string|max:255',
-            'job_details' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'message' => 'required|string|min:10|max:1000',
-        ]);
+        $validated = $request->validated();
 
         // Create the contact message
         $contact = Contact::create([
@@ -67,6 +60,7 @@ class ContactController extends Controller
         // Redirect back with success message
         return redirect()->back()->with('success', 'Thank you for your message! We\'ll get back to you within 24 hours.');
     }
+
     public function show($id)
     {
         $message = Contact::findOrFail($id);

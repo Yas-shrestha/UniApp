@@ -93,4 +93,51 @@ class ContactTest extends TestCase
 
         $response->assertSessionHasErrors(['message']);
     }
+
+    /** @test */
+    public function it_rejects_name_with_numbers()
+    {
+        $data = $this->validContactData([
+            'name' => 'John Doe 123',
+        ]);
+
+        $response = $this->post(route('contact.store'), $data);
+
+        $response->assertSessionHasErrors(['name']);
+    }
+
+    /** @test */
+    public function it_rejects_phone_with_letters()
+    {
+        $data = $this->validContactData([
+            'phone' => '+1234567890abc',
+        ]);
+
+        $response = $this->post(route('contact.store'), $data);
+
+        $response->assertSessionHasErrors(['phone']);
+    }
+
+    /** @test */
+    public function it_accepts_valid_phone_formats()
+    {
+        $validPhones = [
+            '+1-234-567-8900',
+            '(123) 456-7890',
+            '123.456.7890',
+            '+1 (555) 019-9300',
+        ];
+
+        foreach ($validPhones as $phone) {
+            $data = $this->validContactData([
+                'phone' => $phone,
+            ]);
+
+            $response = $this->post(route('contact.store'), $data);
+
+            $response->assertRedirect();
+            $response->assertSessionHas('success');
+            $response->assertSessionMissing('errors');
+        }
+    }
 }

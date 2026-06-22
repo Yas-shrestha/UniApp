@@ -27,7 +27,9 @@
                                                 <div class="mb-3">
                                                     <label for="exampleInputText1" class="form-label">Title</label>
                                                     <input type="text" class="form-control" id="exampleInputText1"
-                                                        aria-describedby="textHelp" name="title">
+                                                        aria-describedby="textHelp" name="title"
+                                                        oninput="filterTitle(this)">
+                                                    <div class="text-danger small d-none" id="title-invalid-char">You cant add number in this field</div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="exampleInputEmail1" class="form-label">Image</label>
