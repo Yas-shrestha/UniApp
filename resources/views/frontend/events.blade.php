@@ -21,16 +21,34 @@
 
         <section class="section" style="background: #faf8f4; padding: 60px 0 80px">
             <div class="container">
-                <!-- Filter Pills -->
+                <div class="events-summary-header" data-aos="fade-up">
+                    <div class="events-summary-left">
+                        <h2>Past Events and Workshop</h2>
+                        <div class="events-summary-line"></div>
+                    </div>
+
+                    <div class="events-summary-right">
+                        <span>Upcoming Event and Workshop</span>
+                    </div>
+                </div>
+
+                <p class="events-summary-note">
+                    Browse our workshop archive and discover the next major experience coming soon.
+                </p>
+
                 <div class="events-filters">
                     <a href="{{ route('events.index') }}"
-                        class="ev-filter-btn {{ !request('category') ? 'active' : '' }}">All</a>
-                    @foreach ($categories as $cat)
-                        <a href="{{ route('events.index', ['category' => $cat->slug]) }}"
-                            class="ev-filter-btn {{ request('category') === $cat->slug ? 'active' : '' }}">
-                            {{ $cat->name }}
-                        </a>
-                    @endforeach
+                        class="ev-filter-btn {{ !request('filter') ? 'active' : '' }}">
+                        All
+                    </a>
+                    <a href="{{ route('events.index', ['filter' => 'upcoming']) }}"
+                        class="ev-filter-btn {{ request('filter') === 'upcoming' ? 'active' : '' }}">
+                        Upcoming
+                    </a>
+                    <a href="{{ route('events.index', ['filter' => 'past']) }}"
+                        class="ev-filter-btn {{ request('filter') === 'past' ? 'active' : '' }}">
+                        Past
+                    </a>
                 </div>
 
                 <!-- Events List -->
@@ -90,38 +108,6 @@
         </section>
     </main>
 
-    <style>
-        .ev-item--past {
-            opacity: 0.75;
-        }
-
-        .ev-item--past .ev-thumb img {
-            filter: grayscale(40%);
-        }
-
-        .ev-status-badge {
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            padding: 3px 10px;
-            border-radius: 50px;
-        }
-
-        .ev-status-badge--past {
-            background: rgba(100, 100, 100, 0.1);
-            color: #666;
-            border: 1px solid rgba(100, 100, 100, 0.2);
-        }
-
-        .ev-status-badge--upcoming {
-            background: rgba(153, 113, 34, 0.1);
-            color: #997122;
-            border: 1px solid rgba(153, 113, 34, 0.25);
-        }
-    </style>
 
     <script>
         (function() {

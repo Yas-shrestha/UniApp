@@ -28,9 +28,9 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'date'   => 'date',
+        'date' => 'date',
         'points' => 'array',
-        'seats'  => 'integer', // Add this line
+        'seats' => 'integer', // Add this line
     ];
 
     // ── Relationships ────────────────────────────────────
@@ -49,17 +49,17 @@ class Event extends Model
 
     public function scopeByCategory($query, $slug)
     {
-        return $query->whereHas('category', fn($q) => $q->where('slug', $slug));
+        return $query->whereHas('category', fn ($q) => $q->where('slug', $slug));
     }
 
     public function scopeUpcoming($query)
     {
-        return $query->where('date', '>=', now())->orderBy('date');
+        return $query->where('date', '>', now())->orderBy('date');
     }
 
     public function scopePast($query)
     {
-        return $query->where('date', '<', now())->orderByDesc('date');
+        return $query->where('date', '<=', now())->orderByDesc('date');
     }
 
     public function scopePublished($query)
@@ -78,6 +78,7 @@ class Event extends Model
     {
         $registeredCount = $this->registrations()->where('status', 'confirmed')->count();
         $seats = (int) $this->seats; // Cast to integer just in case
+
         return max(0, $seats - $registeredCount);
     }
 

@@ -147,17 +147,20 @@ class FrontendController extends Controller
 
     public function events(Request $request)
     {
-        $query = Event::with('category')->upcoming();
+        $filter = $request->query('filter');
+        $query = Event::with('category');
 
-        if ($request->filled('category')) {
-            $query->byCategory($request->category);
+        if ($filter === 'upcoming') {
+            $query->upcoming();
+        } elseif ($filter === 'past') {
+            $query->past();
+        } else {
+            $query->orderBy('date');
         }
 
         $events = $query->paginate(6)->withQueryString();
 
-        $categories = Category::orderBy('name', 'asc')->get();
-
-        return view('frontend.events', compact('events', 'categories'));
+        return view('frontend.events', compact('events'));
     }
 
     public function serviceDetails(string $slug)
