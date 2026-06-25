@@ -132,14 +132,6 @@ class EventController extends Controller
 
         $event->update($validated);
 
-        if ($request->hasFile('gallery_images')) {
-            foreach ($request->file('gallery_images') as $image) {
-                $event->galleries()->create([
-                    'image' => $image->store('event-galleries', 'public'),
-                ]);
-            }
-        }
-
         return redirect('/admin/events')->with('success', 'Event updated successfully.');
     }
 
@@ -148,9 +140,6 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        foreach ($event->galleries as $gallery) {
-            Storage::disk('public')->delete($gallery->image);
-        }
 
         $event->delete();
 
