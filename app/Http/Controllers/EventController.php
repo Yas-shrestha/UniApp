@@ -19,7 +19,7 @@ class EventController extends Controller
         $category = $request->query('category');
 
         $events = Event::with('category')
-            ->upcoming()
+            ->latest()
             ->when($category, fn ($q) => $q->byCategory($category))
             ->paginate(5)
             ->withQueryString();
