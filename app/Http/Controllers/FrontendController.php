@@ -129,7 +129,7 @@ class FrontendController extends Controller
 
     public function eventDetail(string $slug)
     {
-        $event = Event::with(['category', 'registrations', 'galleries'])->where('slug', $slug)->firstOrFail();
+        $event = Event::with(['category', 'registrations'])->where('slug', $slug)->firstOrFail();
 
         $upcoming = Event::upcoming()
             ->where('category_id', $event->category_id)

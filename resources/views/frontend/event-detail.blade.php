@@ -196,19 +196,6 @@
                             <p>{{ $event->audience }}</p>
                         @endif
 
-                        @if ($event->galleries->count())
-                            <h3>Past Event Gallery</h3>
-                            <div class="row g-3 mb-4">
-                                @foreach ($event->galleries as $gallery)
-                                    <div class="col-6 col-md-4">
-                                        <div class="ev-gallery-card">
-                                            <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $event->title }} photo">
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
                         {{-- Related Events --}}
                         @if ($upcoming->count() || $past->count())
                             <h3>Related Events</h3>
