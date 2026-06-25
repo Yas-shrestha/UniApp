@@ -100,10 +100,38 @@
                     @endforelse
                 </div>
 
-                <!-- Pagination -->
-                <div class="ev-pagination">
-                    {{ $events->links() }}
+
+                <div class="ev-gallery my-5">
+    <h1 class="mb-4">Event Gallery</h1>
+
+    <div class="card">
+        <div class="card-body p-4">
+            @if ($galleryImages->count())
+                <div class="row g-4">
+                    @foreach ($galleryImages as $gallery)
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                            <a href="{{ asset('storage/' . $gallery->image) }}"
+                                target="_blank"
+                                class="gallery-card d-block rounded overflow-hidden border">
+                                <img src="{{ asset('storage/' . $gallery->image) }}"
+                                    alt="Gallery Image"
+                                    class="w-100 gallery-image">
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
+            @else
+                <div class="text-center py-5">
+                    <i class="bx bx-image fs-1 text-muted"></i>
+                    <h5 class="mt-3 mb-1">No gallery images found</h5>
+                    <p class="text-muted mb-0">Event gallery images will appear here.</p>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+                <!-- Pagination -->
+           
             </div>
         </section>
     </main>

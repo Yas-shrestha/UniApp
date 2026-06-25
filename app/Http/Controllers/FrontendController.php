@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\EventGallery;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
@@ -128,7 +129,7 @@ class FrontendController extends Controller
 
     public function eventDetail(string $slug)
     {
-        $event = Event::with(['category', 'registrations'])->where('slug', $slug)->firstOrFail();
+        $event = Event::with(['category', 'registrations', 'galleries'])->where('slug', $slug)->firstOrFail();
 
         $upcoming = Event::upcoming()
             ->where('category_id', $event->category_id)
@@ -159,8 +160,8 @@ class FrontendController extends Controller
         }
 
         $events = $query->paginate(6)->withQueryString();
-
-        return view('frontend.events', compact('events'));
+$galleryImages = EventGallery::latest()->take(8)->get();
+        return view('frontend.events', compact('events', 'galleryImages'));
     }
 
     public function serviceDetails(string $slug)

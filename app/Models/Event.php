@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\EventGallery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -126,5 +127,10 @@ class Event extends Model
     public function getUserRegistration($email)
     {
         return $this->registrations()->where('email', $email)->first();
+    }
+
+    public function galleries()
+    {
+        return $this->hasMany(EventGallery::class);
     }
 }

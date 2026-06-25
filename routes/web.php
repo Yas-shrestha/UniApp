@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\EventGalleryController;
 use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\EventRegistrationControllerAdmin;
 
@@ -60,6 +61,8 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     Route::delete('contact/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
     Route::post('contact/{id}/read', [ContactController::class, 'markAsRead'])->name('contact.read');
     Route::post('contact/{id}/replied', [ContactController::class, 'markAsReplied'])->name('contact.replied');
+
+    Route::resource('event-galleries', EventGalleryController::class)->only(['index', 'create', 'store', 'destroy']);
 });
 
 require __DIR__ . '/auth.php';

@@ -111,6 +111,25 @@
                 </li>
             </ul>
         </li>
+        
+        <li class="menu-item {{ Route::is('admin.event-galleries.*') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="fa fa-picture-o" aria-hidden="true"></i>
+                <div data-i18n="Account Settings" class="ms-1">Event Galleries</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('admin.event-galleries.index') }}" class="menu-link">
+                        <div data-i18n="Notifications">Manage</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.event-galleries.create') }}" class="menu-link">
+                        <div>Add New</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Blogs</span>
@@ -139,7 +158,7 @@
             <span class="menu-header-text">Account</span>
         </li>
 
-     
+
         <li class="menu-item">
             <a href="{{ route('logout') }}" class="menu-link"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

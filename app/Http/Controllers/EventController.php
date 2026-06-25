@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EventController extends Controller
@@ -69,7 +70,7 @@ class EventController extends Controller
             $validated['speaker_image'] = $request->file('speaker_image')->store('speakers', 'public');
         }
 
-        Event::create($validated);
+        $event = Event::create($validated);
 
         return redirect('/admin/events')->with('success', 'Event created successfully.');
     }
@@ -131,6 +132,14 @@ class EventController extends Controller
 
         $event->update($validated);
 
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $image) {
+                $event->galleries()->create([
+                    'image' => $image->store('event-galleries', 'public'),
+                ]);
+            }
+        }
+
         return redirect('/admin/events')->with('success', 'Event updated successfully.');
     }
 
@@ -139,6 +148,10 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        foreach ($event->galleries as $gallery) {
+            Storage::disk('public')->delete($gallery->image);
+        }
+
         $event->delete();
 
         return redirect('/admin/events')->with('success', 'Event deleted successfully.');
