@@ -14,6 +14,16 @@
                     <span>{{ $service->title }}</span>
                 </div>
             </div>
+            <div class="text-center mb-4">
+
+                <h2>Client Reviews</h2>
+
+                <p class="text-muted mb-0">
+                    {{ $service->average_rating }}/5
+                    ({{ $service->reviews_count }} reviews)
+                </p>
+
+            </div>
         </section>
 
         <section id="service-details" class="service-details section">
@@ -122,5 +132,213 @@
                 </div>
             </div>
         </section>
+
+        <section id="service-reviews" class="section bg-light py-5">
+            <div class="container" data-aos="fade-up">
+                <h2 class="mb-4 text-center">What Our Clients Say</h2>
+                <div class="service-review-form mt-5">
+                    <h3 class="mb-4">
+                        <i class="bi bi-chat-square-text me-2 text-warning"></i>
+                        Leave a Review
+                    </h3>
+
+                    <form action="{{ route('services.reviews.store', $service) }}" method="POST">
+                        @csrf
+
+                        <div class="row g-3">
+
+                            {{-- Name --}}
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Full Name <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="text" name="name"
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
+                                    placeholder="John Doe" required>
+
+                                @error('name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            {{-- Email --}}
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Email <small class="text-muted">(optional)</small>
+                                </label>
+
+                                <input type="email" name="email"
+                                    class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                    placeholder="john@example.com">
+
+                                @error('email')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            {{-- Rating --}}
+                            <div class="col-12">
+                                <label class="form-label fw-semibold d-block">
+                                    Rating <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="hidden" name="rating" id="rating" value="{{ old('rating') }}">
+
+                                <div id="rating-stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="bi bi-star-fill star-rating" data-rating="{{ $i }}"></i>
+                                    @endfor
+                                </div>
+
+                                @error('rating')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Review --}}
+                            <div class="col-12">
+
+                                <label class="form-label fw-semibold">
+                                    Your Review <span class="text-danger">*</span>
+                                </label>
+
+                                <textarea name="review" rows="5" class="form-control @error('review') is-invalid @enderror"
+                                    placeholder="Share your experience with this service..." required>{{ old('review') }}</textarea>
+
+                                @error('review')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <button class="btn btn-warning px-4">
+
+                                    <i class="bi bi-send me-2"></i>
+
+                                    Submit Review
+
+                                </button>
+
+                                <small class="text-muted ms-3">
+                                    Reviews are published after admin approval.
+                                </small>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="container my-5">
+                @if ($service->approvedReviews->count())
+                    @foreach ($service->approvedReviews as $review)
+                        <div class="card shadow-sm border-0 mb-3">
+                            <div class="card-body">
+
+                                <div class="d-flex align-items-center mb-3">
+
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($review->name) }}&background=997122&color=fff"
+                                        class="rounded-circle me-3" width="55" height="55"
+                                        alt="{{ $review->name }}">
+
+                                    <div>
+
+                                        <h6 class="mb-1">{{ $review->name }}</h6>
+
+                                        <small class="text-muted">
+                                            {{ $review->created_at->format('d M Y') }}
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-2">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $review->rating)
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        @else
+                                            <i class="bi bi-star text-warning"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+
+                                <p class="mb-0">
+                                    {{ $review->review }}
+                                </p>
+
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="alert alert-light border text-center">
+                        No reviews yet. Be the first to review this service.
+                    </div>
+                @endif
+            </div>
+        </section>
     </main>
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                const stars = document.querySelectorAll('.star-rating');
+                const ratingInput = document.getElementById('rating');
+
+                function updateStars(rating) {
+
+                    stars.forEach(function(star) {
+
+                        if (Number(star.dataset.rating) <= Number(rating)) {
+                            star.classList.add('active');
+                        } else {
+                            star.classList.remove('active');
+                        }
+
+                    });
+
+                }
+
+                stars.forEach(function(star) {
+
+                    star.addEventListener('mouseenter', function() {
+
+                        updateStars(this.dataset.rating);
+
+                    });
+
+                    star.addEventListener('click', function() {
+
+                        ratingInput.value = this.dataset.rating;
+
+                        updateStars(this.dataset.rating);
+
+                    });
+
+                });
+
+                document.getElementById('rating-stars')
+                    .addEventListener('mouseleave', function() {
+
+                        updateStars(ratingInput.value);
+
+                    });
+
+                if (ratingInput.value) {
+                    updateStars(ratingInput.value);
+                }
+
+            });
+        </script>
+    @endpush
 @endsection

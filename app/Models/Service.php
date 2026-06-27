@@ -55,4 +55,27 @@ class Service extends Model
             }
         });
     }
+   public function reviews()
+{
+    return $this->hasMany(ServiceReview::class);
+}
+
+public function approvedReviews()
+{
+    return $this->hasMany(ServiceReview::class)
+        ->where('status', 'approved');
+}
+
+public function getAverageRatingAttribute()
+{
+    return round(
+        $this->approvedReviews()->avg('rating') ?? 0,
+        1
+    );
+}
+
+public function getReviewsCountAttribute()
+{
+    return $this->approvedReviews()->count();
+}
 }

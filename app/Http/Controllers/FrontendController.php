@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Event;
 use App\Models\EventGallery;
 use App\Models\Service;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -18,20 +19,12 @@ class FrontendController extends Controller
 
         $solutionsPast = Service::where('type', 'traditional')->orderBy('created_at', 'asc')->get();
         $solutionsFuture = Service::where('type', 'future')->orderBy('created_at', 'asc')->get();
-
-        $testimonials = [
-            [
-                ['name' => 'Kate Winslet', 'role' => 'HR Manager', 'stars' => 5, 'text' => 'The preference system is system is system is system.', 'image' => 'assets/img/testimonials/testimonials-1.jpg'],
-                ['name' => 'Tom',          'role' => 'HR Manager', 'stars' => 5, 'text' => 'The preference system is system is system is system.', 'image' => 'assets/img/testimonials/testimonials-2.jpg'],
-                ['name' => 'Elena',        'role' => 'HR Manager', 'stars' => 5, 'text' => 'The preference system is system is system is system.', 'image' => 'assets/img/testimonials/testimonials-3.jpg'],
-            ],
-            [
-                ['name' => 'Sophia Martinez', 'role' => 'HR Manager', 'stars' => 5, 'text' => 'The preference system is system is system is system.', 'image' => 'assets/img/avatar-2.webp'],
-                ['name' => 'Marcus Sterling', 'role' => 'HR Manager', 'stars' => 5, 'text' => 'The preference system is system is system is system.', 'image' => 'assets/img/avatar-1.webp'],
-                ['name' => 'Aiden Patel',     'role' => 'HR Manager', 'stars' => 5, 'text' => 'The preference system is system is system is system.', 'image' => 'assets/img/avatar-3.webp'],
-            ],
-        ];
-
+        
+$testimonials = Testimonial::where('is_featured', true)
+    ->orderBy('sort_order')
+    ->orderByDesc('created_at')
+    ->get()
+    ->chunk(3);
         return view('frontend.index', compact(
             'upcomingEvents',
             'latestBlogs',
@@ -89,9 +82,9 @@ class FrontendController extends Controller
 
         $blogs = Blog::with('category')
             ->published()
-            ->when($search, fn ($q) => $q->where('title', 'like', "%{$search}%")
+            ->when($search, fn($q) => $q->where('title', 'like', "%{$search}%")
                 ->orWhere('excerpt', 'like', "%{$search}%"))
-            ->when($category, fn ($q) => $q->whereHas('category', fn ($q) => $q->where('slug', $category)))
+            ->when($category, fn($q) => $q->whereHas('category', fn($q) => $q->where('slug', $category)))
             ->latest('published_at')
             ->paginate(6)
             ->withQueryString(); // keeps ?search=&category= on pagination links
@@ -160,15 +153,19 @@ class FrontendController extends Controller
         }
 
         $events = $query->paginate(6)->withQueryString();
-$galleryImages = EventGallery::latest()->take(8)->get();
+        $galleryImages = EventGallery::latest()->take(8)->get();
         return view('frontend.events', compact('events', 'galleryImages'));
     }
 
     public function serviceDetails(string $slug)
     {
-        $service = Service::where('slug', $slug)->firstOrFail();
+        $service = Service::with([
+            'approvedReviews' => function ($query) {
+                $query->latest();
+            }
+        ])->where('slug', $slug)->firstOrFail();
 
-        $allServices = Service::orderBy('title', 'asc')->get();
+        $allServices = Service::orderBy('title')->get();
 
         $relatedServices = Service::where('type', $service->type)
             ->where('id', '!=', $service->id)
@@ -176,7 +173,10 @@ $galleryImages = EventGallery::latest()->take(8)->get();
             ->take(3)
             ->get();
 
-        return view('frontend.service-details', compact('service', 'allServices', 'relatedServices'));
+        return view(
+            'frontend.service-details',
+            compact('service', 'allServices', 'relatedServices')
+        );
     }
 
     public function services(Request $request)

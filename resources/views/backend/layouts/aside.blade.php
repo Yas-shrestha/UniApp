@@ -73,64 +73,90 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Events & Services</span>
         </li>
-
-        <li class="menu-item {{ Route::is('admin.services.*') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-                <div data-i18n="Account Settings" class="ms-1">Services</div>
+<li class="menu-item {{ Route::is('admin.services.*') ? 'active' : '' }}">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        <div class="ms-1">Services</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="{{ route('admin.services.index') }}" class="menu-link">
+                <div>Manage</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('admin.services.index') }}" class="menu-link">
-                        <div data-i18n="Notifications">Manage</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin.services.create') }}" class="menu-link">
-                        <div>Add New</div>
-                    </a>
-                </li>
-            </ul>
         </li>
-
-        <li class="menu-item {{ Route::is('admin.events.*') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fa fa-picture-o" aria-hidden="true"></i>
-                <div data-i18n="Account Settings" class="ms-1">Events</div>
+        <li class="menu-item">
+            <a href="{{ route('admin.services.create') }}" class="menu-link">
+                <div>Add New</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('admin.events.index') }}" class="menu-link">
-                        <div data-i18n="Notifications">Manage</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin.events.create') }}" class="menu-link">
-                        <div>Add New</div>
-                    </a>
-                </li>
-            </ul>
         </li>
-        
-        <li class="menu-item {{ Route::is('admin.event-galleries.*') ? 'active' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="fa fa-picture-o" aria-hidden="true"></i>
-                <div data-i18n="Account Settings" class="ms-1">Event Galleries</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('admin.event-galleries.index') }}" class="menu-link">
-                        <div data-i18n="Notifications">Manage</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin.event-galleries.create') }}" class="menu-link">
-                        <div>Add New</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+    </ul>
+</li>
 
+<li class="menu-item {{ Route::is('admin.service-reviews.*') ? 'active' : '' }}">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="fa-solid fa-star"></i>
+        <div class="ms-1">Service Reviews</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="{{ route('admin.service-reviews.index') }}" class="menu-link">
+                <div>Manage</div>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="menu-item {{ Route::is('admin.testimonials.*') ? 'active' : '' }}">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="fa-solid fa-comments"></i>
+        <div class="ms-1">Testimonials</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="{{ route('admin.testimonials.index') }}" class="menu-link">
+                <div>Manage</div>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="menu-item {{ Route::is('admin.events.*') ? 'active' : '' }}">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="fa-solid fa-calendar-days"></i>
+        <div class="ms-1">Events</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="{{ route('admin.events.index') }}" class="menu-link">
+                <div>Manage</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.events.create') }}" class="menu-link">
+                <div>Add New</div>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="menu-item {{ Route::is('admin.event-galleries.*') ? 'active' : '' }}">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="fa-solid fa-images"></i>
+        <div class="ms-1">Event Galleries</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="{{ route('admin.event-galleries.index') }}" class="menu-link">
+                <div>Manage</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('admin.event-galleries.create') }}" class="menu-link">
+                <div>Add New</div>
+            </a>
+        </li>
+    </ul>
+</li>
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Blogs</span>
         </li>

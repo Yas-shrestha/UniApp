@@ -4279,3 +4279,23 @@ section,
         height: 200px;
     }
 }
+
+#rating-stars{
+    display:flex;
+    gap:8px;
+}
+
+.star-rating{
+    font-size:2rem;
+    cursor:pointer;
+    color:#d4d4d4;
+    transition:.2s;
+}
+
+.star-rating.active{
+    color:#ffc107;
+}
+
+.star-rating:hover{
+    transform:scale(1.1);
+}

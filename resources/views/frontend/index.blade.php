@@ -118,65 +118,78 @@
         </section>
         <!-- Testimonials Section -->
         <section id="testimonials" class="testimonials section">
-            <div class="container section-title" data-aos="fade-up">
-                <h2 class="fw-bold" style="font-size: 2.2rem">
-                    What Our Clients Say
-                </h2>
-                <p>
-                    Community development is defined as a community next to community
-                    planning and may involve stakeholders, foundations.
-                </p>
-            </div>
+    <div class="container section-title" data-aos="fade-up">
+        <h2 class="fw-bold" style="font-size: 2.2rem">
+            What Our Clients Say
+        </h2>
+        <p>
+            Community development is defined as a community next to community
+            planning and may involve stakeholders, foundations.
+        </p>
+    </div>
 
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-                <div class="testimonials-platform">
-                    <div class="testimonials-slider-wrapper">
-                        <div class="testimonials-track" id="testimonialsTrack">
-                            @foreach ($testimonials as $slideGroup)
-                                <div class="testimonials-slide">
-                                    <div class="row g-4">
-                                        @foreach ($slideGroup as $t)
-                                            <div class="col-lg-4 col-md-6 col-12">
-                                                <div class="testimonial-item">
-                                                    <div class="stars">
-                                                        @for ($i = 0; $i < $t['stars']; $i++)
-                                                            <i class="bi bi-star-fill"></i>
-                                                        @endfor
-                                                    </div>
-                                                    <p>{{ $t['text'] }}</p>
-                                                    <div class="d-flex align-items-center mt-3">
-                                                        <img src="{{ $t['image'] ? asset('storage/' . $t['image']) : asset('assets/img/avatar-1.webp') }}"
-                                                            class="testimonial-img me-3" alt="{{ $t['name'] }}"
-                                                            style="width:50px;height:50px;border-radius:50%;object-fit:cover;" />
-                                                        <div>
-                                                            <h4 class="m-0 fw-bold" style="font-size:1rem;color:#2d465e;">
-                                                                {{ $t['name'] }}</h4>
-                                                            <span class="text-muted"
-                                                                style="font-size:0.8rem;">{{ $t['role'] }}</span>
-                                                        </div>
-                                                    </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="testimonials-platform">
+            <div class="testimonials-slider-wrapper">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    @foreach ($testimonials as $slideGroup)
+                        <div class="testimonials-slide">
+                            <div class="row g-4">
+                                @foreach ($slideGroup as $t)
+                                    <div class="col-lg-4 col-md-6 col-12">
+                                        <div class="testimonial-item">
+                                            <div class="stars">
+                                                @for ($i = 0; $i < $t->rating; $i++)
+                                                    <i class="bi bi-star-fill"></i>
+                                                @endfor
+                                            </div>
+
+                                            <p>{{ $t->testimonial }}</p>
+
+                                            <div class="d-flex align-items-center mt-3">
+                                                <img
+                                                    src="{{ $t->image_url }}"
+                                                    class="testimonial-img me-3"
+                                                    alt="{{ $t->name }}"
+                                                    style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
+                                                />
+
+                                                <div>
+                                                    <h4 class="m-0 fw-bold" style="font-size:1rem;color:#2d465e;">
+                                                        {{ $t->name }}
+                                                    </h4>
+
+                                                    <span class="text-muted" style="font-size:0.8rem;">
+                                                        {{ $t->role }}
+                                                        @if($t->company)
+                                                            · {{ $t->company }}
+                                                        @endif
+                                                    </span>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="testimonials-controls">
-                        <button class="testimonials-btn" id="testimonialsPrev" aria-label="Previous slide">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <div class="testimonials-dots" id="testimonialsDots"></div>
-                        <button class="testimonials-btn testimonials-btn--active" id="testimonialsNext"
-                            aria-label="Next slide">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
+                    @endforeach
                 </div>
             </div>
-        </section>
+
+            <div class="testimonials-controls">
+                <button class="testimonials-btn" id="testimonialsPrev" aria-label="Previous slide">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+
+                <div class="testimonials-dots" id="testimonialsDots"></div>
+
+                <button class="testimonials-btn testimonials-btn--active" id="testimonialsNext" aria-label="Next slide">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- About Us Section -->
         <section id="about" class="section" style="padding: 80px 0; background-color: #fafafa">

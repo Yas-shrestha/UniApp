@@ -72,7 +72,22 @@
  <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
  <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
  <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+@stack('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    const toastEl = document.querySelector('.toast');
+
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl, {
+            delay: 5000
+        });
+
+        toast.show();
+    }
+
+});
+</script>
  <!-- Dynamic Rendering & Logic Script -->
  <script>
      // Backend Friendly Data Arrays
@@ -113,56 +128,7 @@
          ],
      };
 
-     const testimonialsData = [
-         [
-             // Slide 1
-             {
-                 name: "Kate Winslet",
-                 role: "HR Manager",
-                 stars: 5,
-                 text: "The preference system is system is system is system. The preference is system in system is system.",
-                 image: "assets/img/testimonials/testimonials-1.jpg",
-             },
-             {
-                 name: "Tom",
-                 role: "HR Manager",
-                 stars: 5,
-                 text: "The preference system is system is system is system. The preference is system in system is system.",
-                 image: "assets/img/testimonials/testimonials-2.jpg",
-             },
-             {
-                 name: "Elena",
-                 role: "HR Manager",
-                 stars: 5,
-                 text: "The preference system is system is system is system. The preference is system in system is system.",
-                 image: "assets/img/testimonials/testimonials-3.jpg",
-             },
-         ],
-         [
-             // Slide 2
-             {
-                 name: "Sophia Martinez",
-                 role: "HR Manager",
-                 stars: 5,
-                 text: "The preference system is system is system is system. The preference is system in system is system.",
-                 image: "assets/img/avatar-2.webp",
-             },
-             {
-                 name: "Marcus Sterling",
-                 role: "HR Manager",
-                 stars: 5,
-                 text: "The preference system is system is system is system. The preference is system in system is system.",
-                 image: "assets/img/avatar-1.webp",
-             },
-             {
-                 name: "Aiden Patel",
-                 role: "HR Manager",
-                 stars: 5,
-                 text: "The preference system is system is system is system. The preference is system in system is system.",
-                 image: "assets/img/avatar-3.webp",
-             },
-         ],
-     ];
+   
 
      const typesData = [{
              title: "Townhouses",
@@ -261,42 +227,7 @@
      }
 
      // Render Testimonials Logic
-     function renderTestimonials() {
-         const track = document.getElementById("testimonialsTrack");
-         if (!track) return;
-
-         track.innerHTML = "";
-         testimonialsData.forEach((slideGroup) => {
-             let slideHtml = `<div class="testimonials-slide"><div class="row g-4">`;
-
-             slideGroup.forEach((t) => {
-                 let starsHtml = "";
-                 for (let i = 0; i < t.stars; i++) {
-                     starsHtml += `<i class="bi bi-star-fill"></i>`;
-                 }
-
-                 slideHtml += `
-              <div class="col-lg-4 col-md-6 col-12">
-                <div class="testimonial-item">
-                  <div class="stars">${starsHtml}</div>
-                  <p>${t.text}</p>
-                  <div class="d-flex align-items-center mt-3">
-                    <img src="${t.image}" class="testimonial-img me-3" alt="${t.name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
-                    <div>
-                      <h4 class="m-0 fw-bold" style="font-size: 1rem; color: #2d465e;">${t.name}</h4>
-                      <span class="text-muted" style="font-size: 0.8rem;">${t.role}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `;
-             });
-
-             slideHtml += `</div></div>`;
-             track.innerHTML += slideHtml;
-         });
-     }
-
+  
      // Initialize Testimonial Slider Controls
      function initSlider() {
          const track = document.getElementById("testimonialsTrack");
@@ -345,7 +276,6 @@
      document.addEventListener("DOMContentLoaded", () => {
          renderSolutions("past");
          renderTypes();
-         renderTestimonials();
          initSlider();
      });
  </script>

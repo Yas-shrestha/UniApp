@@ -53,3 +53,20 @@
             </a>
         </div>
     </header>
+@if(session('success'))
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div class="toast show" role="alert">
+        <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong class="me-auto">Review Submitted</strong>
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="toast"></button>
+        </div>
+
+        <div class="toast-body">
+            {{ session('success') }}
+        </div>
+    </div>
+</div>
+@endif

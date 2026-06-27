@@ -13,6 +13,8 @@ use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\EventGalleryController;
 use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\EventRegistrationControllerAdmin;
+use App\Http\Controllers\ServiceReviewController;
+use App\Http\Controllers\TestimonialController;
 
 Route::get('/chatbot', [ChatbotController::class, 'index']);
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat']);
@@ -35,6 +37,14 @@ Route::get('/admin/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::post('/events/{event}/register', [EventRegistrationController::class, 'store'])->name('events.register');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::post(
+    '/services/{service}/reviews',
+    [ServiceReviewController::class, 'store']
+)->name('services.reviews.store');
+
+
+
 
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -63,6 +73,26 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     Route::post('contact/{id}/replied', [ContactController::class, 'markAsReplied'])->name('contact.replied');
 
     Route::resource('event-galleries', EventGalleryController::class)->only(['index', 'create', 'store', 'destroy']);
+
+    Route::get('/service-reviews', [ServiceReviewController::class, 'index'])
+        ->name('service-reviews.index');
+
+    Route::get('/service-reviews/{serviceReview}', [ServiceReviewController::class, 'show'])
+        ->name('service-reviews.show');
+
+    Route::patch('/service-reviews/{serviceReview}/approve', [ServiceReviewController::class, 'approve'])
+        ->name('service-reviews.approve');
+
+    Route::patch('/service-reviews/{serviceReview}/reject', [ServiceReviewController::class, 'reject'])
+        ->name('service-reviews.reject');
+
+    Route::patch('/service-reviews/{serviceReview}/pending', [ServiceReviewController::class, 'pending'])
+        ->name('service-reviews.pending');
+
+    Route::delete('/service-reviews/{serviceReview}', [ServiceReviewController::class, 'destroy'])
+        ->name('service-reviews.destroy');
+
+        Route::resource('testimonials', TestimonialController::class);
 });
 
 require __DIR__ . '/auth.php';
