@@ -27,7 +27,22 @@ class ContactController extends Controller
             });
         }
 
-        $messages = $query->paginate(10)->withQueryString();
+        if ($request->filled('date_filter')) {
+            switch ($request->date_filter) {
+                case 'today':
+                    $query->whereDate('created_at', today());
+                    break;
+                case 'week':
+                    $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'month':
+                    $query->whereMonth('created_at', now()->month)
+                        ->whereYear('created_at', now()->year);
+                    break;
+            }
+        }
+
+        $messages    = $query->paginate(10)->withQueryString();
         $unreadCount = Contact::unread()->count();
 
         return view('backend.contact.index', compact('messages', 'unreadCount'));
