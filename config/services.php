@@ -38,5 +38,7 @@ return [
     'gemini' => [
         'key' => env('GOOGLE_API_KEY'),
     ],
-
+'event_registration' => [
+    'organizer_email' => env('MAIL_USERNAME'),
+],
 ];
