@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
+use App\Mail\ContactAutoReply;
+use App\Mail\ContactMessageReceived;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -65,12 +68,9 @@ class ContactController extends Controller
             'status' => 'unread',
         ]);
 
-        // Optional: Send email notification to admin
-        // You can uncomment this if you have mail configured
-        // \Mail::to('admin@yourdomain.com')->send(new \App\Mail\ContactMessageReceived($contact));
+        Mail::to(config('services.event_registration'))->send(new ContactMessageReceived($contact));
 
-        // Optional: Send auto-reply to user
-        // \Mail::to($contact->email)->send(new \App\Mail\ContactAutoReply($contact));
+        Mail::to($contact->email)->send(new ContactAutoReply($contact));
 
         // Redirect back with success message
         return redirect()->back()->with('success', 'Thank you for your message! We\'ll get back to you within 24 hours.');
