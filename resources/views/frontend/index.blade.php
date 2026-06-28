@@ -517,7 +517,7 @@
             renderSolutions(tabKey);
         }
 
-        // Remove the static solutionsData array since you're using Laravel data
+     // Remove the static solutionsData array since you're using Laravel data
         // And update the DOMContentLoaded event
         document.addEventListener("DOMContentLoaded", () => {
             // Start with Past visible
@@ -599,7 +599,6 @@
         document.addEventListener("DOMContentLoaded", () => {
             renderSolutions("past");
             renderTypes();
-            renderTestimonials();
             initSlider();
         });
     </script>

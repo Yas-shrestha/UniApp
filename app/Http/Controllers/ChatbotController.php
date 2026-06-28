@@ -91,7 +91,7 @@ Keep answers friendly and helpful. Only use the structured format when the user 
 
         $apiKey   = config('services.gemini.key');
         $response = Http::post(
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}",
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}",
             ['contents' => $geminiMessages]
         );
 
