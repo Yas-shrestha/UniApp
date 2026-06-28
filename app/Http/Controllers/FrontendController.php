@@ -19,7 +19,8 @@ class FrontendController extends Controller
 
         $solutionsPast = Service::where('type', 'traditional')->orderBy('created_at', 'asc')->get();
         $solutionsFuture = Service::where('type', 'future')->orderBy('created_at', 'asc')->get();
-        
+        $galleryImages = EventGallery::latest()->take(8)->get();
+
 $testimonials = Testimonial::where('is_featured', true)
     ->orderBy('sort_order')
     ->orderByDesc('created_at')
@@ -31,6 +32,7 @@ $testimonials = Testimonial::where('is_featured', true)
             'testimonials',
             'solutionsPast',
             'solutionsFuture',
+            'galleryImages'
         ));
     }
 

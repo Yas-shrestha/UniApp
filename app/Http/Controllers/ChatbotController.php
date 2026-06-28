@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Event;
 use App\Models\Blog;
 use App\Models\Service;
+use Illuminate\Support\Facades\Log;
 
 class ChatbotController extends Controller
 {
@@ -17,9 +18,9 @@ class ChatbotController extends Controller
 
     private function buildSystemPrompt(): string
     {
-        $events = Event::select('title', 'slug', 'date', 'location', 'admission')->latest()->get();
+        $events   = Event::select('title', 'slug', 'date', 'location', 'admission')->latest()->get();
         $services = Service::select('title', 'slug', 'short_description')->latest()->get();
-        $blogs = Blog::select('title', 'slug', 'author', 'published_at', 'excerpt')->latest()->take(10)->get();
+        $blogs    = Blog::select('title', 'slug', 'author', 'published_at', 'excerpt')->latest()->take(10)->get();
 
         $eventsText = $events->map(
             fn($e) =>
@@ -36,18 +37,33 @@ class ChatbotController extends Controller
             "- {$b->title} | slug: {$b->slug} | author: {$b->author}"
         )->join("\n");
 
-        return "You are a helpful assistant for Grandview college.
+        return "You are a helpful assistant for Grandview College.
 You answer questions about our events, services, blogs, and general queries.
 
-IMPORTANT FORMATTING RULES:
-- When listing events, ALWAYS use exactly this format for each event:
-  [EVENT] title={title} | date={date} | location={location} | slug={slug} [/EVENT]
-- When listing services, ALWAYS use exactly this format for each service:
-  [SERVICE] title={title} | slug={slug} | description={short description} [/SERVICE]
-- When listing blogs, ALWAYS use exactly this format for each blog:
-  [BLOG] title={title} | slug={slug} | author={author} [/BLOG]
-- You can add plain text before or after the structured items.
-- Never use markdown bold (**) or bullet points for structured items.
+CRITICAL FORMATTING RULES — FOLLOW EXACTLY:
+
+1. For EVENTS, output each one like this (opening AND closing tag required):
+[EVENT] title={title} | date={date} | location={location} | slug={slug} [/EVENT]
+
+2. For SERVICES, output each one like this:
+[SERVICE] title={title} | slug={slug} | description={description} [/SERVICE]
+
+3. For BLOGS, output each one like this:
+[BLOG] title={title} | slug={slug} | author={author} [/BLOG]
+
+RULES:
+- Every opening tag [EVENT], [SERVICE], [BLOG] MUST have a matching closing tag [/EVENT], [/SERVICE], [/BLOG].
+- NEVER omit the closing tag. NEVER output [EVENT]...[EVENT] without [/EVENT] in between.
+- Each item must be on its own line.
+- Do NOT use markdown (**bold**, bullet points, dashes) inside the tags.
+- You may write plain text before or after the structured blocks.
+- Only use structured format when user asks about events, services, or blogs.
+
+EXAMPLE of correct output:
+Here are the upcoming events:
+[EVENT] title={Tech Workshop} | date={Jul 01, 2026} | location={Main Hall} | slug={tech-workshop} [/EVENT]
+[EVENT] title={AI Summit} | date={Jul 15, 2026} | location={Online} | slug={ai-summit} [/EVENT]
+Let me know if you need more details!
 
 CURRENT DATA:
 
@@ -60,7 +76,7 @@ Services:
 Blogs:
 {$blogsText}
 
-Keep answers friendly and helpful. Only use the structured format when the user asks about events, services, or blogs.";
+Keep answers friendly and helpful.";
     }
 
     public function chat(Request $request)
@@ -78,7 +94,7 @@ Keep answers friendly and helpful. Only use the structured format when the user 
             ],
             [
                 'role'  => 'model',
-                'parts' => [['text' => 'Understood! I will help with events, services, blogs and general questions.']],
+                'parts' => [['text' => 'Understood! I will strictly follow the formatting rules and always include closing tags like [/EVENT], [/SERVICE], [/BLOG] for every item.']],
             ],
         ];
 
@@ -89,19 +105,29 @@ Keep answers friendly and helpful. Only use the structured format when the user 
             ];
         }
 
-        $apiKey   = config('services.gemini.key');
-        $response = Http::post(
+        $apiKey = config('services.gemini.key');
+
+        $response = Http::withoutVerifying()->post(
             "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}",
             ['contents' => $geminiMessages]
         );
 
         if ($response->failed()) {
+            Log::error('Gemini API error', [
+                'status' => $response->status(),
+                'body'   => $response->json(),
+            ]);
             return response()->json(['error' => 'Sorry, something went wrong.'], 500);
         }
 
         $data  = $response->json();
-        $reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Sorry, I could not generate a response.';
+$reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Sorry, I could not generate a response.';
 
-        return response()->json(['reply' => $reply]);
+// Remove any duplicate closing tags the AI might add
+$reply = preg_replace('/(\[\/EVENT\])\s*\[\/EVENT\]/', '$1', $reply);
+$reply = preg_replace('/(\[\/SERVICE\])\s*\[\/SERVICE\]/', '$1', $reply);
+$reply = preg_replace('/(\[\/BLOG\])\s*\[\/BLOG\]/', '$1', $reply);
+
+return response()->json(['reply' => $reply]);
     }
 }
